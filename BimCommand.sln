@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36121.58
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tekla", "Tekla", "{532A5B55-EBB8-4936-8C5C-2D50B5055F06}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{792E095C-9A67-4230-875F-4FD6500FA424}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Revit", "Revit", "{09108EB0-FA1F-469E-86DD-43D5D32F682D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CAD", "CAD", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bimcommand", "Bimcommand\Bimcommand.csproj", "{D211534E-981D-4D3B-AB33-0CE6E30BEBBC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D211534E-981D-4D3B-AB33-0CE6E30BEBBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D211534E-981D-4D3B-AB33-0CE6E30BEBBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D211534E-981D-4D3B-AB33-0CE6E30BEBBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D211534E-981D-4D3B-AB33-0CE6E30BEBBC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D211534E-981D-4D3B-AB33-0CE6E30BEBBC} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9E024BB4-7EF2-443C-9FC9-979094766B1D}
+	EndGlobalSection
+EndGlobal
