@@ -8,6 +8,9 @@ namespace Bimcommand.Test
 {
     public class KhaiBao
     {
-        public void
+        public void aa()
+        {
+
+        }
     }
 }
