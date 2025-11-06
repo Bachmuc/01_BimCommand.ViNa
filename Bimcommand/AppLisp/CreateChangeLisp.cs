@@ -4,6 +4,7 @@ using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Colors;
 using static Autodesk.AutoCAD.Colors.ColorMethod; // để sử dụng ColorMethod mà không cần chỉ định đầy đủ namespace
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,8 +26,6 @@ namespace Bimcommand.AppLisp
 
             #region Hàm rút gọn để tạo màu sắc
 
-            Color Aci(short index) => Color.FromColorIndex(ColorMethod.ByAci, index); // Hàm rút gọn để tạo màu từ chỉ số ACI
-
             ///
             ///     Hàm đầy đủ được viết như sau:
             ///
@@ -35,7 +34,7 @@ namespace Bimcommand.AppLisp
             ///             return Color.FromColorIndex(ColorMethod.ByAci, index);
             ///         }
             ///
-
+            Color Aci(short index) => Color.FromColorIndex(ColorMethod.ByAci, index); // Hàm rút gọn để tạo màu từ chỉ số ACI
             Color ByLayer(short index) => Color.FromColorIndex(ColorMethod.ByLayer, index); // Hàm rút gọn để tạo màu ByLayer
             Color Rgb(byte r, byte g, byte b) => Color.FromRgb(r, g, b); // Hàm rút gọn để tạo màu RGB
 
