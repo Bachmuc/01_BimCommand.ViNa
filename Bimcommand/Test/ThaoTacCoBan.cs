@@ -67,5 +67,71 @@ namespace Bimcommand.Test
                 }
             }
         }
+
+        public class NewDim
+        {
+            [CommandMethod("NewDim")] ///Tạo dim mới
+
+            public void NewDime()
+            {
+                Document doc = Application.DocumentManager.MdiActiveDocument;
+                Editor ed = doc.Editor;
+                Database db = doc.Database;
+
+                using(Transaction tr = db.TransactionManager.StartTransaction())
+                {
+                    DimStyleTable dl = (DimStyleTable)tr.GetObject(db.DimStyleTableId, OpenMode.ForWrite);
+                    DimStyleTableRecord dlr = new DimStyleTableRecord();
+
+                    dlr.Name = "0 - Dim";
+
+                    //Lines
+                    dlr.Dimdli = 3.75;
+                    dlr.Dimexe = 1.25;
+                    dlr.Dimexo = 0.625;
+
+                    //symbols and Arrows
+                    dlr.Dimasz = 2.5;
+
+                    //text
+                    dlr.Dimtxt = 2.5;
+                    dlr.Dimgap = 0.625;
+
+                    //Fit
+                    dlr.Dimscale = 100;
+
+                    dl.Add(dlr);
+                    tr.AddNewlyCreatedDBObject(dlr, true);
+                    tr.Commit();
+                }
+            }
+        }
+
+        public class Newtextstyle
+        {
+            [CommandMethod("NewTextStyle")]
+
+            public void NewTextStyle()
+            {
+                Document doc = Application.DocumentManager.MdiActiveDocument;
+                Editor ed = doc.Editor;
+                Database db = doc.Database;
+
+                using(Transaction tr = db.TransactionManager.StartTransaction())
+                {
+                    TextStyleTable tt = (TextStyleTable)tr.GetObject(db.TextStyleTableId, OpenMode.ForWrite);
+                    TextStyleTableRecord ttr = new TextStyleTableRecord();
+
+                    ttr.Name = "Text New";
+
+                    //ttr.FileName = "TCVN 7284";
+                    ttr.Font = new Autodesk.AutoCAD.GraphicsInterface.FontDescriptor("TCVN 7284", false, false, 0,0);
+
+                    tt.Add(ttr);
+                    tr.AddNewlyCreatedDBObject(ttr, true);
+                    tr.Commit();
+                }    
+            }
+        }
     }
 }
