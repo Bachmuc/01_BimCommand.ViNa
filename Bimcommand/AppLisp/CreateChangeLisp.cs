@@ -11,69 +11,106 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography.X509Certificates;
+using Autodesk.AutoCAD.GraphicsInterface;
 
 namespace Bimcommand.AppLisp
 {
     public class CreateChangeLisp
     {
-        #region Tạo Layer mới và cập nhật màu sắc nếu layer đã tồn tại
-        [CommandMethod("LL")]
+        private void ChangeSelectlayer(string layerName)//Chọn các đối tượng và gán phím tắt để đổi layer nhanh
+
+        {
+            Document doc = Application.DocumentManager.MdiActiveDocument;
+            Editor ed = doc.Editor;
+            Database db = doc.Database;
+
+            PromptSelectionResult promptSelectionResult = ed.GetSelection();
+
+            if (promptSelectionResult.Status != PromptStatus.OK)
+            {
+                return;
+            }
+
+            SelectionSet selectionSet = promptSelectionResult.Value; // Tổng các đối tượng đã select
+
+            using (Transaction tr = db.TransactionManager.StartTransaction())
+            {
+                foreach (ObjectId so in selectionSet.GetObjectIds()) //Vòng lặp 
+                {
+                    LayerTable lb = tr.GetObject(db.LayerTableId, OpenMode.ForRead) as LayerTable;
+
+                    Entity Entity = tr.GetObject(so, OpenMode.ForWrite) as Entity; //Mở từng đối tượng bằng quyền ghi
+
+                    if (Entity != null)
+                    {
+                        Entity.Layer = layerName; // Lệnh chính -> gán đối tượng bên trong vòng lặp
+                    }
+                }
+                tr.Commit();
+            }
+
+        }
+
+        public class ListLayer
+        {
+            public string Name { get; set; }
+            public Color color { get; set; }
+            public string LineType { get; set; }
+            public ListLayer( string name, Color color, string lineType = null)
+            {
+                Name = name;
+                this.color = color;
+                LineType = lineType;
+            }
+
+            public static readonly List<ListLayer> StandardLayers = new List<ListLayer>
+            {
+                //("Rebar", Autodesk.AutoCAD.Colors.Color.FromColorIndex(Autodesk.AutoCAD.Colors.ColorMethod.ByAci, 2)),//=> Hàm đâyng ký màu sắc đầy đủ namespace
+                new ListLayer("Rebar",Aci(4),"CENTER"),
+                //("SlabLayout",Color.FromColorIndex(ByAci, 4)), => có thể viết tắt khi khai báo using static Autodesk.AutoCAD.Colors.ColorMethod;
+                new ListLayer("SlabLayout",Aci(4)),
+
+                new ListLayer("SlabOpening",Aci(4)),// Dùng hàm rút gọn để tạo màu sắc
+                new ListLayer("RebarRegion", Aci(1)),
+                new ListLayer("Slab_Center", Aci(2)),
+
+                new ListLayer("ColLayout",Aci(2)),
+                new ListLayer("COLUMNBLOCK",Aci(7)),
+
+                new ListLayer("BeamLayout",Aci(3)),
+                new ListLayer("BIMBLOCKS",Aci(7)),
+                new ListLayer("WallLayout",Aci(1)),
+
+                new ListLayer("StairLayout",Aci(6)),
+
+                new ListLayer("Khung",Aci(7)),
+                new ListLayer("Gird",Aci(8)),
+                new ListLayer("Opening",Aci(7)),
+                new ListLayer("Hatch",Aci(9)),
+                new ListLayer("Work Point",Aci(7)),
+
+                new ListLayer("00 - Text",Aci(9)),
+                new ListLayer("00 - Tag",Aci(9)),
+                new ListLayer("00 - Dim",Aci(9)),
+            };
+
+            #region Hàm rút gọn để tạo màu sắc
+            public static Color Aci(short index) => Color.FromColorIndex(ColorMethod.ByAci, index); // Hàm rút gọn để tạo màu từ chỉ số ACI
+            public static Color ByLayer(short index) => Color.FromColorIndex(ColorMethod.ByLayer, index); // Hàm rút gọn để tạo màu ByLayer
+            public static Color Rgb(byte r, byte g, byte b) => Color.FromRgb(r, g, b); // Hàm rút gọn để tạo màu RGB
+            #endregion
+        } //Danh sách layer cần tạo
+        [CommandMethod("LL")]//Tạo Layer mới và cập nhật màu sắc nếu layer đã tồn tại
         public static void CreateChange()
         {
             Document doc = Application.DocumentManager.MdiActiveDocument;
             Editor ed = doc.Editor;
             Database db = doc.Database;
 
-            #region Hàm rút gọn để tạo màu sắc
-
-            ///
-            ///     Hàm đầy đủ được viết như sau:
-            ///
-            ///      Color Aci(short index)
-            ///         {
-            ///             return Color.FromColorIndex(ColorMethod.ByAci, index);
-            ///         }
-            ///
-            Color Aci(short index) => Color.FromColorIndex(ColorMethod.ByAci, index); // Hàm rút gọn để tạo màu từ chỉ số ACI
-            Color ByLayer(short index) => Color.FromColorIndex(ColorMethod.ByLayer, index); // Hàm rút gọn để tạo màu ByLayer
-            Color Rgb(byte r, byte g, byte b) => Color.FromRgb(r, g, b); // Hàm rút gọn để tạo màu RGB
-
-            #endregion
-
-            //Danh sách layer cần tạo
-
-            var layers = new List<(string Name,Color color)>
-            {
-              //("Rebar-stirrup", Autodesk.AutoCAD.Colors.Color.FromColorIndex(Autodesk.AutoCAD.Colors.ColorMethod.ByAci, 2)),
-                ("Rebar", Autodesk.AutoCAD.Colors.Color.FromColorIndex(Autodesk.AutoCAD.Colors.ColorMethod.ByAci, 4)), //=> Hàm đâyng ký màu sắc đầy đủ namespace
-
-                ("SlabLayout",Color.FromColorIndex(ByAci, 4)), // => có thể viết tắt khi khai báo using static Autodesk.AutoCAD.Colors.ColorMethod;
-
-                ("SlabOpening",Aci(7)), // Dùng hàm rút gọn để tạo màu sắc
-
-                ("RebarRegion", Aci(1)), 
-                ("Slab_Center", Aci(2)), 
-                ("ColLayout",Aci(2)),
-                ("COLUMNBLOCK",Aci(7)),
-                ("BeamLayout",Aci(3)),
-                ("WallLayout",Aci(1)),
-                ("StairLayout",Aci(6)),
-
-                ("Khung",Aci(7)),
-                ("Gird",Aci(8)),
-                ("Opening",Aci(7)),
-                ("Hatch",Aci(9)),
-
-                ("00 - Text",Aci(9)),
-                ("00 - Tag",Aci(9)),
-                ("00 - Dim",Aci(9)),
-
-            };
-
             using (Transaction tr = db.TransactionManager.StartTransaction()) // Bắt đầu một giao dịch
             {
                 LayerTable layerTable = (LayerTable)tr.GetObject(db.LayerTableId, OpenMode.ForWrite); // Mở bảng layer để ghi, nếu chỉ đọc thì thấy là OpenMode.ForRead
-                foreach (var layer in layers) // Duyệt qua từng layer trong danh sách
+                foreach (var layer in ListLayer.StandardLayers) // Duyệt qua từng layer trong danh sách
                 {
                     if (!layerTable.Has(layer.Name)) // Kiểm tra nếu layer chưa tồn tại
                     {
@@ -95,28 +132,130 @@ namespace Bimcommand.AppLisp
             }
 
         }
-        #endregion
 
-        #region Lệnh gàn phím tắt
+        #region Sàn
 
-        [CommandMethod("S1")] // Gán lệnh đổi layer cho phím tắt S1
+        //?Thêm lệnh CommandFlags.UsePickSet nó báo AutoCAD được sử dụng bộ chọn trước
+        [CommandMethod("S1",CommandFlags.UsePickSet)] // Gán lệnh đổi layer cho phím tắt S1
         public void SlabLayout()
         {
             ChangeSelectlayer("SlabLayout");
         }
 
-        [CommandMethod("S2")] // Gán lệnh đổi layer cho phím tắt S2
+        [CommandMethod("S2", CommandFlags.UsePickSet)] // Gán lệnh đổi layer cho phím tắt S2
         public void SlabOpening() => ChangeSelectlayer("SlabOpening");
 
+        [CommandMethod("S3", CommandFlags.UsePickSet)] // Gán lệnh đổi layer cho phím tắt S3
+        public void SlabCenter() => ChangeSelectlayer("RebarRegion");
+
+        [CommandMethod("S4", CommandFlags.UsePickSet)] 
+        public void Slab_Center() => ChangeSelectlayer("Slab_Center");
         #endregion
 
-        //Hàm đổi layer cho các đối tượng được chọn
-        private void ChangeSelectlayer(string LayerName)
+        #region Cột
+        [CommandMethod("C1", CommandFlags.UsePickSet)]
+        public void ColLayout() => ChangeSelectlayer("ColLayout");
+        [CommandMethod("C2", CommandFlags.UsePickSet)]
+        public void COLUMNBLOCK() => ChangeSelectlayer("COLUMNBLOCK");
+        #endregion
+
+        #region Dầm
+        [CommandMethod ("B1", CommandFlags.UsePickSet)]
+        public void BeamLayout() => ChangeSelectlayer("BeamLayout");
+
+        [CommandMethod("B2", CommandFlags.UsePickSet)]
+        public void BIMBLOCKS() => ChangeSelectlayer("BIMBLOCKS");
+        #endregion
+
+        #region Tường
+        [CommandMethod("W1", CommandFlags.UsePickSet)]
+        public void WallLayout() => ChangeSelectlayer("WallLayout");
+
+        [CommandMethod("W2", CommandFlags.UsePickSet)]
+        public void BIMBLOCKSW() => ChangeSelectlayer("BIMBLOCKS");
+        #endregion
+
+        #region Cầu thang
+        [CommandMethod("ST1", CommandFlags.UsePickSet)]
+        public void StairLayout ()=> ChangeSelectlayer("StairLayout");
+        #endregion
+
+        #region Khác
+        [CommandMethod("T0", CommandFlags.UsePickSet)]
+        public void ChangeWorkPoint() => ChangeSelectlayer("Work Point");
+
+        [CommandMethod("T1", CommandFlags.UsePickSet)]
+        public void ChangGird() => ChangeSelectlayer("Gird");
+
+        [CommandMethod("T2", CommandFlags.UsePickSet)]
+        public void ChangKhung() => ChangeSelectlayer("Khung");
+
+        [CommandMethod("T3", CommandFlags.UsePickSet)]
+        public void ChangOpening() => ChangeSelectlayer("Opening");
+
+        [CommandMethod("T4", CommandFlags.UsePickSet)]
+        public void ChangHatch() => ChangeSelectlayer("Hatch");
+
+        [CommandMethod("N1", CommandFlags.UsePickSet)]
+        public void ChangText() => ChangeSelectlayer("00 - Text");
+
+        [CommandMethod("N2", CommandFlags.UsePickSet)]
+        public void ChangTag() => ChangeSelectlayer("00 - Tag");
+
+        [CommandMethod("N3", CommandFlags.UsePickSet)]
+        public void ChangDim() => ChangeSelectlayer("00 - Dim");
+        #endregion
+
+
+        [CommandMethod("LH", CommandFlags.UsePickSet)]//Hàm đổi layer cho các đối tượng được chọn
+        public void CLayerLH()
         {
             Document doc = Application.DocumentManager.MdiActiveDocument;
             Editor ed = doc.Editor;
             Database db = doc.Database;
 
+            //Tùy chọn hiển thị thông báo chọn đối tượng
+            PromptEntityOptions opt = new PromptEntityOptions("\nSelect Object to Change Layer");
+
+            opt.AllowNone = false; //Không cho phép bỏ qua chọn đối tượng
+
+            //Yêu cầu người dùng chọn đối tượng
+            PromptEntityResult res = ed.GetEntity(opt);
+
+            //Kiểm tra kết quả chọn -> nếu người dùng ấn ESC, trạng thái sẽ khong phải OK
+            if (res.Status != PromptStatus.OK)
+            {
+                ed.WriteMessage("\nNo Object Select");
+                return;
+            }
+            //Mở transaction và bắt đầu xử lý
+            using (Transaction tr = db.TransactionManager.StartTransaction())
+            {
+                try
+                {
+                    //Lấy đối tượng entity từ ObjectId mà người dùng chọn
+                    Entity SelectedEntity = tr.GetObject(res.ObjectId, OpenMode.ForRead) as Entity;
+
+                    if (SelectedEntity != null)
+                    {
+                        string TargetLayerName = SelectedEntity.Layer; // Lấy tên layer của đối tượng đã chọn
+
+                        LayerTable layerTable = (LayerTable)tr.GetObject(db.LayerTableId, OpenMode.ForRead); //Lấy bảng quản lý layer
+
+                        ObjectId TargetId = layerTable[TargetLayerName]; // Lấy ObjectId của layer từ tên của nó 
+
+                        db.Clayer = TargetId; // Đặt layer hiện hành (CLAYER) thành layer mới
+
+                        ed.WriteMessage($"Changed to Layer {TargetLayerName}");
+
+                    }
+                }
+                catch
+                {
+                    // Bỏ qua đối tượng không thể đổi layer
+                }
+                tr.Commit(); // Lưu các thay đổi
+            }
         }
 
     }

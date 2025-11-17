@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 //using Autodesk.AutoCAD.ApplicationServices;
 //using Autodesk.AutoCAD.DatabaseServices;
@@ -50,7 +51,7 @@ namespace Bimcommand.Test
             //Nhân vector với một số
             public static Vector2 operator *(Vector2 Vector, double Multiplier) //Vector * số
             {
-                if(Vector == null)
+                if (Vector == null)
                 {
                     return null; //throw new ArgumentNullException("Vector không được null");
                 }
@@ -62,26 +63,69 @@ namespace Bimcommand.Test
                 return Multiplier * Vector; ;
             }
 
-            //Chiều dài vector
+            //Chiều dài vector: v(x,y) -> |v| = sqrt(x^2 + y^2)
             public double GetLength()
             {
                 return Math.Sqrt(X * X + Y * Y);
             }
 
-            //Tích vô hướng
+            //Tích vô hướng: v1 . v2 = x1*x2 + y1*y2
             public double Dot(Vector2 Vector)
             {
                 return this.X * Vector.X + this.Y * Vector.Y;
             }
 
-        }
+            //Normalize về độ dài cho trước
+            public double Normalize(double NewLength)
+            {
+                double CurrentLength = GetLength();
+                if (CurrentLength < EPSILON)
+                {
+                    return 0.0; //Không thể chuẩn hóa vector có độ dài bằng 0
+                }
+                double ScaleFactor = NewLength / CurrentLength;
+                this.X *= ScaleFactor;
+                this.Y *= ScaleFactor;
+                return CurrentLength;
+            }
 
-        public void Main()
-        {
-            double a = 0;
-            double b = 0;
+            //Normalize về độ dài 1 (mặc định)
+            public double Normalize()
+            {
+                return Normalize(1.0);
+            }
 
-            Vector2 v1 = new Vector2(a, b);
+            //Hàm thành viên
+            public Vector2 GetNormal()
+            {
+                Vector2 vector = new Vector2(this);
+                vector.Normalize();
+                return vector;
+            }
+
+            //Get Angle between two vectors in radians
+            public double GetAngle(Vector2 Vector)
+            {
+                double dotProduct = this.Dot(Vector);
+                double lengthsProduct = this.GetLength() * Vector.GetLength();
+                if (lengthsProduct < EPSILON)
+                {
+                    MessageBox.Show("Không thể tính góc giữa các vector có độ dài bằng 0");
+                    return 0.0; // throw new InvalidOperationException("Không thể tính góc giữa các vector có độ dài bằng 0");
+                }
+                double cosTheta = dotProduct / lengthsProduct;
+                cosTheta = Math.Max(-1.0, Math.Min(1.0, cosTheta));
+                return Math.Acos(cosTheta);
+
+            }
+
+            public void Main()
+            {
+                double a = 0;
+                double b = 0;
+
+                Vector2 v1 = new Vector2(a, b);
+            }
         }
     }
 }
