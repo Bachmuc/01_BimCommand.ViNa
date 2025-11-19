@@ -51,7 +51,7 @@ namespace Bimcommand.AppLisp
 
         }
 
-        public class ListLayer
+        public class ListLayer //Danh sách layer cần tạo
         {
             public string Name { get; set; }
             public Color color { get; set; }
@@ -99,7 +99,8 @@ namespace Bimcommand.AppLisp
             public static Color ByLayer(short index) => Color.FromColorIndex(ColorMethod.ByLayer, index); // Hàm rút gọn để tạo màu ByLayer
             public static Color Rgb(byte r, byte g, byte b) => Color.FromRgb(r, g, b); // Hàm rút gọn để tạo màu RGB
             #endregion
-        } //Danh sách layer cần tạo
+        } 
+        
         [CommandMethod("LL")]//Tạo Layer mới và cập nhật màu sắc nếu layer đã tồn tại
         public static void CreateChange()
         {
@@ -252,7 +253,7 @@ namespace Bimcommand.AppLisp
                 }
                 catch
                 {
-                    // Bỏ qua đối tượng không thể đổi layer
+                    ed.WriteMessage("Layer Object Can't Be Change");// Bỏ qua đối tượng không thể đổi layer
                 }
                 tr.Commit(); // Lưu các thay đổi
             }
