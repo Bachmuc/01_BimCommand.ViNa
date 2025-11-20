@@ -17,7 +17,7 @@ namespace Bimcommand.AppLisp
 {
     public class CreateChangeLisp
     {
-        private void ChangeSelectlayer(string layerName)//Chọn các đối tượng và gán phím tắt để đổi layer nhanh
+        private void ChangeSelectlayer(string layerName) // Chọn các đối tượng và gán phím tắt để đổi layer nhanh
 
         {
             Document doc = Application.DocumentManager.MdiActiveDocument;
@@ -37,8 +37,6 @@ namespace Bimcommand.AppLisp
             {
                 foreach (ObjectId so in selectionSet.GetObjectIds()) //Vòng lặp 
                 {
-                    LayerTable lb = tr.GetObject(db.LayerTableId, OpenMode.ForRead) as LayerTable;
-
                     Entity Entity = tr.GetObject(so, OpenMode.ForWrite) as Entity; //Mở từng đối tượng bằng quyền ghi
 
                     if (Entity != null)
@@ -48,15 +46,14 @@ namespace Bimcommand.AppLisp
                 }
                 tr.Commit();
             }
-
         }
 
-        public class ListLayer //Danh sách layer cần tạo
+        public class ListLayer // Danh sách layer cần tạo
         {
             public string Name { get; set; }
             public Color color { get; set; }
             public string LineType { get; set; }
-            public ListLayer( string name, Color color, string lineType = null)
+            public ListLayer(string name, Color color, string lineType = null)
             {
                 Name = name;
                 this.color = color;
@@ -70,7 +67,7 @@ namespace Bimcommand.AppLisp
                 //("SlabLayout",Color.FromColorIndex(ByAci, 4)), => có thể viết tắt khi khai báo using static Autodesk.AutoCAD.Colors.ColorMethod;
                 new ListLayer("SlabLayout",Aci(4)),
 
-                new ListLayer("SlabOpening",Aci(4)),// Dùng hàm rút gọn để tạo màu sắc
+                new ListLayer("SlabOpening",Aci(7)),// Dùng hàm rút gọn để tạo màu sắc
                 new ListLayer("RebarRegion", Aci(1)),
                 new ListLayer("Slab_Center", Aci(2)),
 
@@ -99,9 +96,9 @@ namespace Bimcommand.AppLisp
             public static Color ByLayer(short index) => Color.FromColorIndex(ColorMethod.ByLayer, index); // Hàm rút gọn để tạo màu ByLayer
             public static Color Rgb(byte r, byte g, byte b) => Color.FromRgb(r, g, b); // Hàm rút gọn để tạo màu RGB
             #endregion
-        } 
-        
-        [CommandMethod("LL")]//Tạo Layer mới và cập nhật màu sắc nếu layer đã tồn tại
+        }
+
+        [CommandMethod("LL")] // Tạo Layer mới và cập nhật màu sắc nếu layer đã tồn tại
         public static void CreateChange()
         {
             Document doc = Application.DocumentManager.MdiActiveDocument;
@@ -131,13 +128,12 @@ namespace Bimcommand.AppLisp
                 }
                 tr.Commit(); // Cam kết các thay đổi vào cơ sở dữ liệu AutoCAD
             }
-
         }
-
+        #region []
         #region Sàn
 
-        //?Thêm lệnh CommandFlags.UsePickSet nó báo AutoCAD được sử dụng bộ chọn trước
-        [CommandMethod("S1",CommandFlags.UsePickSet)] // Gán lệnh đổi layer cho phím tắt S1
+        //Thêm lệnh CommandFlags.UsePickSet nó báo AutoCAD được sử dụng bộ chọn trước
+        [CommandMethod("S1", CommandFlags.UsePickSet)] // Gán lệnh đổi layer cho phím tắt S1
         public void SlabLayout()
         {
             ChangeSelectlayer("SlabLayout");
@@ -149,7 +145,7 @@ namespace Bimcommand.AppLisp
         [CommandMethod("S3", CommandFlags.UsePickSet)] // Gán lệnh đổi layer cho phím tắt S3
         public void SlabCenter() => ChangeSelectlayer("RebarRegion");
 
-        [CommandMethod("S4", CommandFlags.UsePickSet)] 
+        [CommandMethod("S4", CommandFlags.UsePickSet)]
         public void Slab_Center() => ChangeSelectlayer("Slab_Center");
         #endregion
 
@@ -161,7 +157,7 @@ namespace Bimcommand.AppLisp
         #endregion
 
         #region Dầm
-        [CommandMethod ("B1", CommandFlags.UsePickSet)]
+        [CommandMethod("B1", CommandFlags.UsePickSet)]
         public void BeamLayout() => ChangeSelectlayer("BeamLayout");
 
         [CommandMethod("B2", CommandFlags.UsePickSet)]
@@ -178,7 +174,7 @@ namespace Bimcommand.AppLisp
 
         #region Cầu thang
         [CommandMethod("ST1", CommandFlags.UsePickSet)]
-        public void StairLayout ()=> ChangeSelectlayer("StairLayout");
+        public void StairLayout() => ChangeSelectlayer("StairLayout");
         #endregion
 
         #region Khác
@@ -206,9 +202,9 @@ namespace Bimcommand.AppLisp
         [CommandMethod("N3", CommandFlags.UsePickSet)]
         public void ChangDim() => ChangeSelectlayer("00 - Dim");
         #endregion
+        #endregion
 
-
-        [CommandMethod("LH", CommandFlags.UsePickSet)]//Hàm đổi layer cho các đối tượng được chọn
+        [CommandMethod("LH")] // Hàm đổi layer hiện hành
         public void CLayerLH()
         {
             Document doc = Application.DocumentManager.MdiActiveDocument;
@@ -216,7 +212,7 @@ namespace Bimcommand.AppLisp
             Database db = doc.Database;
 
             //Tùy chọn hiển thị thông báo chọn đối tượng
-            PromptEntityOptions opt = new PromptEntityOptions("\nSelect Object to Change Layer");
+            PromptEntityOptions opt = new PromptEntityOptions("\nSelect object to change Layer");
 
             opt.AllowNone = false; //Không cho phép bỏ qua chọn đối tượng
 
@@ -247,7 +243,7 @@ namespace Bimcommand.AppLisp
 
                         db.Clayer = TargetId; // Đặt layer hiện hành (CLAYER) thành layer mới
 
-                        ed.WriteMessage($"Changed to Layer {TargetLayerName}");
+                        ed.WriteMessage($"Changed to Layer '{TargetLayerName}'");
 
                     }
                 }
@@ -259,5 +255,108 @@ namespace Bimcommand.AppLisp
             }
         }
 
+        [CommandMethod("LK")] // Khóa Layer
+        public void ClayerLK()
+        {
+            Document doc = Application.DocumentManager.MdiActiveDocument;
+            Editor ed = doc.Editor;
+            Database db = doc.Database;
+
+            // Kiểm tra biến hệ thống LAYLOCKFADECTL
+            try
+            {
+                // Nếu nó đang bằng  0 (không mờ), ta set lên 50 (mờ 50%)
+                object LockFade = Application.GetSystemVariable("LAYLOCKFADECTL");
+                short val = Convert.ToInt16(LockFade);
+                if (val <= 0)
+                {
+                    int newVal = (val < 0) ? Math.Abs(val) : 50 ;
+                    if (val == 0) newVal = 50;
+                    Application.SetSystemVariable("LAYLOCKFADECTL", newVal);
+                }
+            }
+            catch {/*Bỏ qua lỗi nếu không truy cập được biến*/ };
+
+            PromptEntityOptions peo = new PromptEntityOptions("\nSelect an object to lock");
+            PromptEntityResult psr = ed.GetEntity(peo);
+            if (psr.Status != PromptStatus.OK) return;
+
+            //Chỉ mờ Transaction để lấy tên layerName (không sửa gì cả)
+            string layerName = "";
+            using (Transaction tr = db.TransactionManager.StartTransaction())
+            {
+                Entity ett = (Entity)tr.GetObject(psr.ObjectId, OpenMode.ForRead); // Mở  đối tượng để lấy thông tin (chỉ read để lấy tên layer
+
+                if (ett != null)
+                {
+                    layerName = ett.Layer;
+                }
+                tr.Commit();
+            }
+
+            // Dùng lệnh Native của AutoCAD để khóa
+            if (!string.IsNullOrEmpty(layerName))
+            {
+                // Bỏ chọn đối tượng trước khi chạy lệnh để tránh lỗi hiển thị
+                ed.SetImpliedSelection(new ObjectId[0]);
+                try
+                {
+                    // Cú pháp: ed.Command(Tên lệnh, Tham số 1, Tham số 2, ...);
+                    // "Wait" tương đương với Enter kết thúc lệnh
+                    // Cách này KHÔNG hiện menu Dynamic Input
+                    ed.Command("_-LAYER", "_LOCK", layerName, "");
+
+                    ed.WriteMessage($"\nLayer '{layerName}' locked successfully.");
+                }
+                catch (System.Exception ex)
+                {
+                    // ed.Command đôi khi kén ngữ cảnh, nếu lỗi thì báo ra
+                    ed.WriteMessage("\nError locking layer: " + ex.Message);
+                }
+            }
+            //// ed.UpdateScreen(); // Nhẹ hơn Regen nhưng giúp update hiển thị tức thì
+            //// ed.Regen(); //Quan trọng: Cập nhật lại hiển thị để thấy hiệu ứng khóa layer
+            //// Biện pháp mạnh không dùng ed.Regen() nữa.
+            //// Lệnh này ép AutoCAD tính toán lại toàn bộ hiển thị từ con số 0
+            //doc.SendStringToExecute("_.REGENALL ", true, false, false);
+        }
+
+        [CommandMethod("LUK")] // Mở khóa Layer
+        public void ClayerLUK()
+        {
+            Document doc = Application.DocumentManager.MdiActiveDocument;
+            Editor ed = doc.Editor;
+            Database db = doc.Database;
+
+            PromptEntityOptions peo = new PromptEntityOptions("\nSelect an object to unlock");
+            peo.AllowObjectOnLockedLayer = true; // Cho phép chọn đối tượng trên layer đã khóa
+
+            PromptEntityResult psr = ed.GetEntity(peo);
+            if (psr.Status != PromptStatus.OK) return;
+
+            //Chỉ mờ Transaction để lấy tên layerName (không sửa gì cả)
+            string layerName = "";
+            using (Transaction tr = db.TransactionManager.StartTransaction())
+            {
+                Entity ett = (Entity)tr.GetObject(psr.ObjectId, OpenMode.ForRead); // Mở  đối tượng để lấy thông tin (chỉ read để lấy tên layer
+                if (ett != null)
+                {
+                    layerName = ett.Layer;
+                }
+                tr.Commit();
+            }
+
+            if (!string.IsNullOrEmpty(layerName))
+            {
+                ed.SetImpliedSelection(new ObjectId[0]); // Bỏ chọn đối tượng trước khi chạy lệnh để tránh lỗi hiển thị
+                try
+                {
+                    ed.Command($"_-LAYER", "_UNLOCK",layerName,"");
+                    ed.WriteMessage($"\nLayer '{layerName}' has been unlocked");
+                }
+                catch { }
+            }
+
+        }
     }
 }
