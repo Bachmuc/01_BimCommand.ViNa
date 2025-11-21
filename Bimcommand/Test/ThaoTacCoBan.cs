@@ -14,7 +14,7 @@ using Autodesk.AutoCAD.Colors;
 
 namespace Bimcommand.Test
 {
-    public class ThaoTacCoBan
+    internal class ThaoTacCoBan
     {
         public class NewLayer
         {

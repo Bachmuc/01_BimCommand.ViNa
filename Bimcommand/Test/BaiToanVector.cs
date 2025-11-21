@@ -16,7 +16,7 @@ using System.Windows.Forms;
 
 namespace Bimcommand.Test
 {
-    public class BaiToanVector
+    internal class BaiToanVector
     {
         public const double EPSILON = 1E-06;
         public class Vector2
