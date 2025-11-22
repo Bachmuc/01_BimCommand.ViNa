@@ -54,6 +54,35 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Tekla.Structures, Version=2020.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\TeklaStructures\2020.0\nt\bin\plugins\Tekla.Structures.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Tekla.Structures.Catalogs, Version=2020.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\TeklaStructures\2020.0\nt\bin\plugins\Tekla.Structures.Catalogs.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Tekla.Structures.Drawing, Version=2020.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\TeklaStructures\2020.0\nt\bin\plugins\Tekla.Structures.Drawing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Tekla.Structures.Geometry3d.Compatibility">
+      <HintPath>C:\TeklaStructures\2020.0\nt\bin\plugins\Tekla.Structures.Geometry3d.Compatibility.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Tekla.Structures.Model, Version=2020.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\TeklaStructures\2020.0\nt\bin\plugins\Tekla.Structures.Model.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Tekla.Structures.Plugins, Version=2020.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\TeklaStructures\2020.0\nt\bin\plugins\Tekla.Structures.Plugins.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppLisp\SetUDA.cs" />
