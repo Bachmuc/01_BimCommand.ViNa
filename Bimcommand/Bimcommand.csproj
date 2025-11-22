@@ -60,6 +60,8 @@
     <Compile Include="AppLisp\ElevationZero.cs" />
     <Compile Include="AppLisp\CreateChangeLisp.cs" />
     <Compile Include="AppLisp\LoadAutoLisp.cs" />
+    <Compile Include="CADtoTEKLA\ExportSlabToTekla.cs" />
+    <Compile Include="CADtoTEKLA\SupportFuctions.cs" />
     <Compile Include="KeyLincese\HardwareInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\BaiToanVector.cs" />
