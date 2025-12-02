@@ -46,6 +46,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -86,6 +87,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppLisp\EditTextBlock.cs" />
+    <Compile Include="AppLisp\FormEditText.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AppLisp\FormEditText.Designer.cs">
+      <DependentUpon>FormEditText.cs</DependentUpon>
+    </Compile>
     <Compile Include="AppLisp\SetUDA.cs" />
     <Compile Include="AppLisp\ElevationZero.cs" />
     <Compile Include="AppLisp\CreateChangeLisp.cs" />
@@ -98,6 +105,11 @@
     <Compile Include="Test\ChooseOption.cs" />
     <Compile Include="Test\PhuongAn1_SetUDA.cs" />
     <Compile Include="Test\ThaoTacCoBan.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AppLisp\FormEditText.resx">
+      <DependentUpon>FormEditText.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

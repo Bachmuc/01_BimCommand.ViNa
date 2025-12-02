@@ -37,23 +37,14 @@ namespace Bimcommand.AppLisp
             using (Transaction tr = db.TransactionManager.StartTransaction())
             {
                 Entity ent = tr.GetObject(per.ObjectId, OpenMode.ForWrite) as Entity;
-                if(ent is DBText || ent is MText)
+                if (ent is DBText || ent is MText)
                 {
-                    // Prompt for new value, default to current
-                    PromptStringOptions pso = new PromptStringOptions("\nEnter new text content: ");
-                    pso.DefaultValue = currentText;
-                    pso.UseDefaultValue = true;
-                    pso.AllowSpaces = true;
+                    // Chọn trước đối tượng (PickFirst)
+                    ed.SetImpliedSelection(new ObjectId[] { per.ObjectId });
 
-                    PromptResult pr = ed.GetString(pso);
-                    if (pr.Status == PromptStatus.OK)
-                    {
-                        if (ent is DBText dbText) dbText.TextString = pr.StringResult;
-                        else if (ent is MText mText) mText.Contents = pr.StringResult;
-                    }
-                }
-                else if(ent is MText BDText)
-                {
+                    // Gửi lệnh TEXTEDIT vào command line
+                    // Khoảng trắng phía sau "_TEXTEDIT " tương đương với phím Enter
+                    doc.SendStringToExecute("_TEXTEDIT ", true, false, false);
                 }
                 tr.Commit();
             }
