@@ -13,7 +13,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Tekla.Structures.Geometry3d;
 using Application = Autodesk.AutoCAD.ApplicationServices.Application;
 
 namespace Bimcommand.AppLisp

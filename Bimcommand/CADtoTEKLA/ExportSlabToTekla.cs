@@ -14,7 +14,7 @@ using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows.Data;
-using Tekla.Structures.Model;
+//using Tekla.Structures.Model;
 
 namespace Bimcommand.CADtoTEKLA
 {
@@ -29,21 +29,21 @@ namespace Bimcommand.CADtoTEKLA
             Database db = doc.Database;
 
             // 2. Kết nối đến Tekla Structures
-            Model model = new Model();
-            if(!model.GetConnectionStatus())
-            {
-                ed.WriteMessage("\nNot connected to Tekla Structures.");
-                return;
-            }
+            //Model model = new Model();
+            //if(!model.GetConnectionStatus())
+            //{
+            //    ed.WriteMessage("\nNot connected to Tekla Structures.");
+            //    return;
+            //}
 
-            // 3. Chọn đối tượng slab trong AutoCAD
-            PromptEntityOptions peo = new PromptEntityOptions("");
-            PromptEntityResult per = ed.GetEntity(peo);
-            if(per.Status != PromptStatus.OK)
-            {
-                ed.WriteMessage("\nNo entity selected.");
-                return;
-            }
+            //// 3. Chọn đối tượng slab trong AutoCAD
+            //PromptEntityOptions peo = new PromptEntityOptions("");
+            //PromptEntityResult per = ed.GetEntity(peo);
+            //if(per.Status != PromptStatus.OK)
+            //{
+            //    ed.WriteMessage("\nNo entity selected.");
+            //    return;
+            //}
 
 
         }
