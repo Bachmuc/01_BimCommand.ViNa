@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppLisp\FilterSelect.cs" />
     <Compile Include="AppLisp\EditTextBlock.cs" />
     <Compile Include="AppLisp\SetUDA.cs" />
     <Compile Include="AppLisp\ElevationZero.cs" />
@@ -75,6 +76,12 @@
     <Compile Include="Test\ChooseOption.cs" />
     <Compile Include="Test\PhuongAn1_SetUDA.cs" />
     <Compile Include="Test\ThaoTacCoBan.cs" />
+    <Compile Include="UI\FormFilterSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FormFilterSelect.Designer.cs">
+      <DependentUpon>FormFilterSelect.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\FormEditText.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,6 +96,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FormEditText.resx">
       <DependentUpon>FormEditText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FormFilterSelect.resx">
+      <DependentUpon>FormFilterSelect.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

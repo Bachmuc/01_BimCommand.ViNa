@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,17 +13,28 @@ namespace Bimcommand.UI
 {
     public partial class FormEditText : Form
     {
-        // Các biến xử lý di chuyển Form
-        private bool dragging = false;
-        private Point dragCursorPoint;
-        private Point dragFormPoint;
 
         public FormEditText()
         {
             InitializeComponent();
+
+            // Tạo góc bo tròn cho Form
+            int radius = 10; // độ cong góc
+            var path = new GraphicsPath();
+            path.AddArc(0, 0, radius, radius, 180, 90);
+            path.AddArc(this.Width - radius, 0, radius, radius, 270, 90);
+            path.AddArc(this.Width - radius, this.Height - radius, radius, radius, 0, 90);
+            path.AddArc(0, this.Height - radius, radius, radius, 90, 90);
+            path.CloseFigure();
+
+            this.Region = new Region(path);
         }
 
         #region Xử lý tiêu đề kéo thả Form
+        // Các biến xử lý di chuyển Form
+        private bool dragging = false;
+        private Point dragCursorPoint;
+        private Point dragFormPoint;
         // Sự kiện nút đóng Form
         private void btnClose_Click(object sender, EventArgs e)
         {
@@ -79,7 +91,6 @@ namespace Bimcommand.UI
                 e.SuppressKeyPress = true;
             }
         }
-
         //Tạo Property để lấy giá trị TextBox từ bên ngoài Form
         public string TextContentResult
         {
