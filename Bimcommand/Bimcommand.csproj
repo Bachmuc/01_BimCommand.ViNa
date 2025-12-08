@@ -58,41 +58,35 @@
     <Reference Include="Tekla.Structures, Version=2020.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\TeklaStructures\2020.0\nt\bin\plugins\Tekla.Structures.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Tekla.Structures.Catalogs, Version=2020.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\TeklaStructures\2020.0\nt\bin\plugins\Tekla.Structures.Catalogs.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Tekla.Structures.Drawing, Version=2020.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\TeklaStructures\2020.0\nt\bin\plugins\Tekla.Structures.Drawing.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Tekla.Structures.Geometry3d.Compatibility">
       <HintPath>C:\TeklaStructures\2020.0\nt\bin\plugins\Tekla.Structures.Geometry3d.Compatibility.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Tekla.Structures.Model, Version=2020.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\TeklaStructures\2020.0\nt\bin\plugins\Tekla.Structures.Model.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Tekla.Structures.Plugins, Version=2020.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\TeklaStructures\2020.0\nt\bin\plugins\Tekla.Structures.Plugins.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppLisp\EditTextBlock.cs" />
-    <Compile Include="AppLisp\FormEditText.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AppLisp\FormEditText.Designer.cs">
-      <DependentUpon>FormEditText.cs</DependentUpon>
-    </Compile>
     <Compile Include="AppLisp\SetUDA.cs" />
     <Compile Include="AppLisp\ElevationZero.cs" />
     <Compile Include="AppLisp\CreateChangeLisp.cs" />
@@ -101,13 +95,28 @@
     <Compile Include="CADtoTEKLA\SupportFuctions.cs" />
     <Compile Include="KeyLincese\HardwareInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Test\BaiToanVector.cs" />
     <Compile Include="Test\ChooseOption.cs" />
     <Compile Include="Test\PhuongAn1_SetUDA.cs" />
     <Compile Include="Test\ThaoTacCoBan.cs" />
+    <Compile Include="UI\FormEditText.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FormEditText.Designer.cs">
+      <DependentUpon>FormEditText.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AppLisp\FormEditText.resx">
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FormEditText.resx">
       <DependentUpon>FormEditText.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
