@@ -16,9 +16,16 @@ namespace Bimcommand.UI
     {
         //Properties để class bên ngoài để lấy kết quả
         public FilterOption SelectedOption { get; set; } = FilterOption.None;
-        public FormFilterSelect()
+        public FormFilterSelect(Point mouseLocation)
         {
             InitializeComponent();
+
+            this.StartPosition = FormStartPosition.Manual;
+            // Kiểm tra tràn màn hình (Optional)
+            Rectangle screen = Screen.FromPoint(mouseLocation).WorkingArea;
+            if (mouseLocation.X + this.Width > screen.Right) mouseLocation.X = screen.Right - this.Width;
+            if (mouseLocation.Y + this.Height > screen.Bottom) mouseLocation.Y = screen.Bottom - this.Height;
+            this.Location = mouseLocation;
 
             // Tạo góc bo tròn cho Form
             int radius = 5; // độ cong góc

@@ -7,8 +7,10 @@ using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows.Data;
 using Bimcommand.UI;
+
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,10 +28,12 @@ namespace Bimcommand.AppLisp
             Editor ed = doc.Editor;
             Database db = doc.Database;
 
+
             FilterOption _selectedOption = new FilterOption();
+            Point mousePos = Cursor.Position; //Lấy tọa độ chuột trước
 
             // 1.Gọi form để chọn kiểu lọc
-            using(FormFilterSelect form = new FormFilterSelect())
+            using (FormFilterSelect form = new FormFilterSelect(mousePos))
             {
                 DialogResult result = Application.ShowModalDialog(form); // ShowModalDialog giúp Form hiện đè lên CAD, bắt buộc xử lý xong mới quay lại CAD
 
@@ -38,7 +42,7 @@ namespace Bimcommand.AppLisp
             }
 
             // 2.Chọn đối tượng với bộ lọc đã chọn
-            PromptEntityOptions peo = new PromptEntityOptions($"\n[Mode: {_selectedOption}] Select an object: ");
+            PromptEntityOptions peo = new PromptEntityOptions($"\n[Mode: {_selectedOption}] Select an object");
             peo.SetRejectMessage("\nThe selected object is not supported.");
             peo.AllowNone = false;
 
