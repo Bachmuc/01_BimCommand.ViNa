@@ -6,7 +6,7 @@ using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Publishing;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows.Data;
-using Bimcommand.UI;
+using Bimcommand.AppLisp.Forms;
 
 using System;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ namespace Bimcommand.AppLisp
             Editor ed = doc.Editor;
 
             //Chọn đối tượng Text hoặc MText
-            PromptNestedEntityOptions peo = new PromptNestedEntityOptions("\nSelect Text or MText: ");
+            PromptNestedEntityOptions peo = new PromptNestedEntityOptions("\nSelect Content: ");
             //peo.SetRejectMessage("\nSelected object is not Text or MText.");
             //peo.AddAllowedClass(typeof(DBText), true);
             //peo.AddAllowedClass(typeof(MText), true);
@@ -41,7 +41,7 @@ namespace Bimcommand.AppLisp
             {
                 Entity ent = tr.GetObject(per.ObjectId, OpenMode.ForWrite) as Entity;
                 //Khởi tạo Form
-                FormEditText form = new UI.FormEditText();
+                FormEditText form = new AppLisp.Forms.FormEditText();
 
                 //Lấy nội dung Text hoặc MText hiện tại để hiển thị trên Form
                 if (ent is DBText)

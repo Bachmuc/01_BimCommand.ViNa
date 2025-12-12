@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Bimcommand.UI
+namespace Bimcommand.AppLisp.Forms
 {
     public partial class FormEditText : Form
     {

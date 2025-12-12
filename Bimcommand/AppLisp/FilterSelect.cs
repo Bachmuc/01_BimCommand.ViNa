@@ -6,7 +6,7 @@ using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows.Data;
-using Bimcommand.UI;
+using Bimcommand.AppLisp.Forms;
 
 using System;
 using System.Collections.Generic;
@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static Bimcommand.AppLisp.Forms.FormFilterSelect;
 using Application = Autodesk.AutoCAD.ApplicationServices.Application;
 
 namespace Bimcommand.AppLisp
@@ -36,7 +37,6 @@ namespace Bimcommand.AppLisp
             using (FormFilterSelect form = new FormFilterSelect(mousePos))
             {
                 DialogResult result = Application.ShowModalDialog(form); // ShowModalDialog giúp Form hiện đè lên CAD, bắt buộc xử lý xong mới quay lại CAD
-
                 if (result != DialogResult.OK) return;
                 _selectedOption = form.SelectedOption; //Lấy tùy chọn người dùng chọn trên Form
             }

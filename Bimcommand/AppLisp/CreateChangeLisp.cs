@@ -89,6 +89,8 @@ namespace Bimcommand.AppLisp
                 new ListLayer("00 - Text",Aci(9)),
                 new ListLayer("00 - Tag",Aci(9)),
                 new ListLayer("00 - Dim",Aci(9)),
+
+                // Thêm layer ShopDrawing
             };
 
             #region Hàm rút gọn để tạo màu sắc
@@ -98,37 +100,6 @@ namespace Bimcommand.AppLisp
             #endregion
         }
 
-        [CommandMethod("LL")] // Tạo Layer mới và cập nhật màu sắc nếu layer đã tồn tại
-        public static void CreateChange()
-        {
-            Document doc = Application.DocumentManager.MdiActiveDocument;
-            Editor ed = doc.Editor;
-            Database db = doc.Database;
-
-            using (Transaction tr = db.TransactionManager.StartTransaction()) // Bắt đầu một giao dịch
-            {
-                LayerTable layerTable = (LayerTable)tr.GetObject(db.LayerTableId, OpenMode.ForWrite); // Mở bảng layer để ghi, nếu chỉ đọc thì thấy là OpenMode.ForRead
-                foreach (var layer in ListLayer.StandardLayers) // Duyệt qua từng layer trong danh sách
-                {
-                    if (!layerTable.Has(layer.Name)) // Kiểm tra nếu layer chưa tồn tại
-                    {
-                        LayerTableRecord layerRecord = new LayerTableRecord // Tạo một bản ghi LayerTableRecord mới (tượng trưng cho một layer trong AutoCAD).
-                        {
-                            Name = layer.Name,
-                            Color = layer.color
-                        };
-                        layerTable.Add(layerRecord); // Thêm bản ghi layer mới vào bảng layer
-                        tr.AddNewlyCreatedDBObject(layerRecord, true); // Thông báo với giao dịch rằng chúng ta đã tạo một đối tượng mới để quản lý vòng đời của nó  => Nếu không có dòng này, leyer sẽ không được tạo trong AutoCAD
-                    }
-                    else
-                    {
-                        LayerTableRecord existingLayer = (LayerTableRecord)tr.GetObject(layerTable[layer.Name], OpenMode.ForWrite); // Mở layer đã tồn tại để ghi
-                        existingLayer.Color = layer.color; // Cập nhật màu sắc nếu layer đã tồn tại
-                    }
-                }
-                tr.Commit(); // Cam kết các thay đổi vào cơ sở dữ liệu AutoCAD
-            }
-        }
         #region []
         #region Sàn
 
@@ -203,6 +174,38 @@ namespace Bimcommand.AppLisp
         public void ChangDim() => ChangeSelectlayer("00 - Dim");
         #endregion
         #endregion
+
+        [CommandMethod("LL")] // Tạo Layer mới và cập nhật màu sắc nếu layer đã tồn tại
+        public static void CreateChange()
+        {
+            Document doc = Application.DocumentManager.MdiActiveDocument;
+            Editor ed = doc.Editor;
+            Database db = doc.Database;
+
+            using (Transaction tr = db.TransactionManager.StartTransaction()) // Bắt đầu một giao dịch
+            {
+                LayerTable layerTable = (LayerTable)tr.GetObject(db.LayerTableId, OpenMode.ForWrite); // Mở bảng layer để ghi, nếu chỉ đọc thì thấy là OpenMode.ForRead
+                foreach (var layer in ListLayer.StandardLayers) // Duyệt qua từng layer trong danh sách
+                {
+                    if (!layerTable.Has(layer.Name)) // Kiểm tra nếu layer chưa tồn tại
+                    {
+                        LayerTableRecord layerRecord = new LayerTableRecord // Tạo một bản ghi LayerTableRecord mới (tượng trưng cho một layer trong AutoCAD).
+                        {
+                            Name = layer.Name,
+                            Color = layer.color
+                        };
+                        layerTable.Add(layerRecord); // Thêm bản ghi layer mới vào bảng layer
+                        tr.AddNewlyCreatedDBObject(layerRecord, true); // Thông báo với giao dịch rằng chúng ta đã tạo một đối tượng mới để quản lý vòng đời của nó  => Nếu không có dòng này, leyer sẽ không được tạo trong AutoCAD
+                    }
+                    else
+                    {
+                        LayerTableRecord existingLayer = (LayerTableRecord)tr.GetObject(layerTable[layer.Name], OpenMode.ForWrite); // Mở layer đã tồn tại để ghi
+                        existingLayer.Color = layer.color; // Cập nhật màu sắc nếu layer đã tồn tại
+                    }
+                }
+                tr.Commit(); // Cam kết các thay đổi vào cơ sở dữ liệu AutoCAD
+            }
+        }
 
         [CommandMethod("LH")] // Hàm đổi layer hiện hành
         public void CLayerLH()

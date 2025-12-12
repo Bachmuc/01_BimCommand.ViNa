@@ -1,4 +1,4 @@
-﻿namespace Bimcommand.UI
+﻿namespace Bimcommand.AppLisp.Forms
 {
     partial class FormFilterSelect
     {

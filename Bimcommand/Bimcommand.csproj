@@ -77,16 +77,16 @@
     <Compile Include="Test\ChooseOption.cs" />
     <Compile Include="Test\PhuongAn1_SetUDA.cs" />
     <Compile Include="Test\ThaoTacCoBan.cs" />
-    <Compile Include="UI\FormFilterSelect.cs">
+    <Compile Include="AppLisp\Forms\FormFilterSelect.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\FormFilterSelect.Designer.cs">
+    <Compile Include="AppLisp\Forms\FormFilterSelect.Designer.cs">
       <DependentUpon>FormFilterSelect.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\FormEditText.cs">
+    <Compile Include="AppLisp\Forms\FormEditText.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\FormEditText.Designer.cs">
+    <Compile Include="AppLisp\Forms\FormEditText.Designer.cs">
       <DependentUpon>FormEditText.cs</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -95,12 +95,15 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\FormEditText.resx">
+    <EmbeddedResource Include="AppLisp\Forms\FormEditText.resx">
       <DependentUpon>FormEditText.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\FormFilterSelect.resx">
+    <EmbeddedResource Include="AppLisp\Forms\FormFilterSelect.resx">
       <DependentUpon>FormFilterSelect.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UI\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
