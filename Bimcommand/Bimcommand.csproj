@@ -73,6 +73,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ShopDrawing\ConvertMtext.cs" />
     <Compile Include="Test\BaiToanVector.cs" />
     <Compile Include="Test\ChooseOption.cs" />
     <Compile Include="Test\PhuongAn1_SetUDA.cs" />

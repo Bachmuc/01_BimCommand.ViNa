@@ -17,7 +17,7 @@ using Exception = Autodesk.AutoCAD.Runtime.Exception;
 
 namespace Bimcommand.AppLisp
 {
-    public class SetUDA
+    internal class SetUDA
     {
         [CommandMethod("EE")] // Đổi UDA theo phương của đối tượng
         public void Set_USC()
