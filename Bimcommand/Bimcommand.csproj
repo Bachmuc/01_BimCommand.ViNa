@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppLisp\TotalLengthArea.cs" />
     <Compile Include="AppLisp\ElevationMarking.cs" />
     <Compile Include="AppLisp\FilterSelect.cs" />
     <Compile Include="AppLisp\EditTextBlock.cs" />
