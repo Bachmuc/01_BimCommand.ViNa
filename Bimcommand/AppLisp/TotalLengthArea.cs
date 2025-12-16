@@ -184,6 +184,7 @@ namespace Bimcommand.AppLisp
                 if (ent != null)
                 {
                     layerNameO = ent.Layer;
+                    ed.WriteMessage($"{layerNameO}");
                 }
             }
             #endregion
@@ -200,6 +201,8 @@ namespace Bimcommand.AppLisp
                 if (ent != null)
                 {
                     layerNameE = ent.Layer;
+                    ed.WriteMessage($"{layerNameE}");
+
                 }
             }
             #endregion
@@ -315,7 +318,7 @@ namespace Bimcommand.AppLisp
                     resulfArea.Position = pointbase;
                     resulfArea.TextString = $"\tArea 1: {Area1:0.00} m² - Area 2: {Area2:0.00} m² - Area Total: {Area:0.00} m²";
                     resulfArea.Height = 250.0;
-                    resulfArea.Layer = "00 - Text";
+                    resulfArea.Layer = layerNameO;
                     resulfArea.HorizontalMode = TextHorizontalMode.TextLeft; //Căn trái
                     resulfArea.VerticalMode = TextVerticalMode.TextBottom;
                     resulfArea.AlignmentPoint = pointbase; // Cần thiết khi chỉnh Mode
