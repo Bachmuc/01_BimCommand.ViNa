@@ -84,10 +84,10 @@ namespace Bimcommand.AppLisp
             if (ppr1.Status != PromptStatus.OK) return;
             Point3d Point1 = ppr1.Value; //Point1 = new Point3d(Point1.X, Point1.Y, Point1.Z); // Gán cao độ đã đánh dấu cho Point1
 
+            // Chọn điểm tiếp theo
             int index = 2;
             while (true)
             {
-                // Chọn điểm tiếp theo
                 PromptPointOptions ppo2 = new PromptPointOptions($"\nChoose Point {index} ");
 
                 ppo2.UseBasePoint = true; // Sử dụng điểm cơ sở
@@ -109,8 +109,14 @@ namespace Bimcommand.AppLisp
                     using (DBText resultText = new DBText())
                     {
                         resultText.Position = Point2;
-                        resultText.TextString = heigth.ToString("0.0");
-
+                        if(heigth >= 0)
+                        {
+                            resultText.TextString = $"+{heigth.ToString("0.0")}";
+                        }
+                        else
+                        {
+                            resultText.TextString = $"{heigth.ToString("0.0")}";
+                        }
                         // Lấy chiều cao chữ
                         if (TextHeight > 0)
                             resultText.Height = TextHeight;

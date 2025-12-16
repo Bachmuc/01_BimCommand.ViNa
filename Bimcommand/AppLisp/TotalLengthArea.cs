@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using System.Windows.Forms;
-using Autodesk.AutoCAD.ApplicationServices;
+﻿using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Colors;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using Application = Autodesk.AutoCAD.ApplicationServices.Application;
 
 namespace Bimcommand.AppLisp
@@ -35,17 +35,17 @@ namespace Bimcommand.AppLisp
 
             // Bắt sự kiện: khi người dùng nhập từ khóa, nó lưu vào biến KWork
             PromptResult pr = ed.GetKeywords(pko);
-            if(pr.Status != PromptStatus.OK) return;
+            if (pr.Status != PromptStatus.OK) return;
 
-            if(pr.StringResult == "Length")
+            if (pr.StringResult == "Length")
             {
                 TotalLength();
             }
-            else if(pr.StringResult == "Area")
+            else if (pr.StringResult == "Area")
             {
                 TotalArea();
             }
-            else if(pr.StringResult == "MinorArea")
+            else if (pr.StringResult == "MinorArea")
             {
                 TotalMinorArea();
             }
@@ -59,14 +59,14 @@ namespace Bimcommand.AppLisp
             Editor ed = doc.Editor;
             Database db = doc.Database;
 
-                PromptSelectionOptions pso = new PromptSelectionOptions();
-                pso.MessageForAdding = "\n[Mode: Length] Select lines to calculate total length: ";
-                SelectionFilter Slf = new SelectionFilter(new TypedValue[]
-                {
+            PromptSelectionOptions pso = new PromptSelectionOptions();
+            pso.MessageForAdding = "\n[Mode: Length] Select lines to calculate total length: ";
+            SelectionFilter Slf = new SelectionFilter(new TypedValue[]
+            {
                     new TypedValue((int)DxfCode.Start, "LINE,LWPOLYLINE,POLYLINE,ARC,CIRCLE,SPLINE")
-                });
-                PromptSelectionResult psr = ed.GetSelection(pso,Slf);
-                if (psr.Status != PromptStatus.OK) return;
+            });
+            PromptSelectionResult psr = ed.GetSelection(pso, Slf);
+            if (psr.Status != PromptStatus.OK) return;
 
             double totalLength = 0.0;
             int count = 0;
@@ -84,9 +84,15 @@ namespace Bimcommand.AppLisp
                     }
                 }
                 tr.Commit();
+                // Replace this line in TotalLength():
+                // ShowMessageText($"Length: {count:N2} mm", db.Clayer);
+
+                // With this:
+                ShowMessageText($"Length: {count:N2} mm");
             }
+
             ed.WriteMessage($"\nSelected Quantity: {count} (item) - Total Length: {totalLength:0.00} mm");
-            MessageBox.Show($"\nTotal Length: {totalLength:0.00}mm");
+            //MessageBox.Show($"\nTotal Length: {totalLength:0.00}mm"); // Hiển thị hộp thoại thông báo
             /*
              * {Biến:0.00} : định dạng số thập phân 2 chữ số. Ví dụ: 123.456 -> 123.46
              * {Biến:#,##} : Chỉ luôn hiển thị 2 số, nếu tròn số thì không hiện. Ví dụ: 1.234 -> 1.23, 56 -> 56
@@ -103,14 +109,14 @@ namespace Bimcommand.AppLisp
             Editor ed = doc.Editor;
             Database db = doc.Database;
 
-                PromptSelectionOptions pso = new PromptSelectionOptions();
-                pso.MessageForAdding = "\n[Mode: Area] Select closed polylines to calculate total area: ";
-                SelectionFilter Slf = new SelectionFilter(new TypedValue[]
-                {
+            PromptSelectionOptions pso = new PromptSelectionOptions();
+            pso.MessageForAdding = "\n[Mode: Area] Select closed polylines to calculate total area: ";
+            SelectionFilter Slf = new SelectionFilter(new TypedValue[]
+            {
                     new TypedValue((int)DxfCode.Start, "LWPOLYLINE,POLYLINE,HATCH,REGION,CIRCLE")
-                });
-                PromptSelectionResult psr = ed.GetSelection(pso,Slf);
-                if (psr.Status != PromptStatus.OK) return;
+            });
+            PromptSelectionResult psr = ed.GetSelection(pso, Slf);
+            if (psr.Status != PromptStatus.OK) return;
 
             double totalArea = 0.0;
             bool isValue = false;
@@ -140,7 +146,7 @@ namespace Bimcommand.AppLisp
                             NoclosedCount++;
                         }
                     }
-                    else if ( ent is Hatch hatch)
+                    else if (ent is Hatch hatch)
                     {
                         area = hatch.Area;
                         isValue = true;
@@ -158,10 +164,10 @@ namespace Bimcommand.AppLisp
                     }
                 }
                 tr.Commit();
+                    ShowMessageText($"Area: {(totalArea / 1000000):N2} m²");
             }
-            double totalArea_m2 = totalArea / 1000000.0; // Chuyển mm2 sang m2
-            ed.WriteMessage($"\nSelected Quantity: {count} (item) - No Close: {NoclosedCount} (item) - Total Area: {totalArea_m2:N3} m²)");
-            MessageBox.Show($"\nTotal Area: {totalArea_m2:0.00}m²");
+            ed.WriteMessage($"\nSelected Quantity: {count} (item) - No Close: {NoclosedCount} (item) - Total Area: {(totalArea / 1000000):N3} m²)"); // Chuyển mm -> m (1/1000000)
+            //MessageBox.Show($"\nTotal Area: {totalArea_m2:0.00}m²");
         }
 
         // Hàm tính tổng diện tích (Minor Area)
@@ -218,11 +224,11 @@ namespace Bimcommand.AppLisp
             PromptSelectionResult psr = ed.GetSelection(osp, slf);
             if (psr.Status != PromptStatus.OK) return;
 
-            // Chọn điểm pick hiển thị kết quả
-            PromptPointOptions ppo = new PromptPointOptions("\nSpecify base point: ");
-            ppo.AllowNone = true;
-            PromptPointResult ppr = ed.GetPoint(ppo);
-            Point3d pointbase = ppr.Value;
+            //// Chọn điểm pick hiển thị kết quả
+            //PromptPointOptions ppo = new PromptPointOptions("\nSpecify base point: ");
+            //ppo.AllowNone = true;
+            //PromptPointResult ppr = ed.GetPoint(ppo);
+            //Point3d pointbase = ppr.Value;
 
             // Khai báo biến tính toán
             double totalArea1 = 0.0;
@@ -231,9 +237,9 @@ namespace Bimcommand.AppLisp
             int count = 0;
             int NoclosedCount = 0;
 
-           using(Transaction tr = db.TransactionManager.StartTransaction())
+            using (Transaction tr = db.TransactionManager.StartTransaction())
             {
-                foreach(SelectedObject so in psr.Value)
+                foreach (SelectedObject so in psr.Value)
                 {
                     Entity ent = tr.GetObject(so.ObjectId, OpenMode.ForRead) as Entity;
                     double area = 0.0;
@@ -308,30 +314,78 @@ namespace Bimcommand.AppLisp
                     }
                 }
 
-                double Area1 = totalArea1 / 1000000.0; // Chuyển mm2 sang m2
-                double Area2 = totalArea2 / 1000000.0; // Chuyển mm2 sang m2
-                double Area = Area1 - Area2;
-                // Hiển thị kết quả trên bản vẽ
-                BlockTableRecord btr = tr.GetObject(db.CurrentSpaceId, OpenMode.ForWrite) as BlockTableRecord;
-                using(DBText resulfArea = new DBText())
-                {
-                    resulfArea.Position = pointbase;
-                    resulfArea.TextString = $"\tArea 1: {Area1:0.00} m² - Area 2: {Area2:0.00} m² - Area Total: {Area:0.00} m²";
-                    resulfArea.Height = 250.0;
-                    resulfArea.Layer = layerNameO;
-                    resulfArea.HorizontalMode = TextHorizontalMode.TextLeft; //Căn trái
-                    resulfArea.VerticalMode = TextVerticalMode.TextBottom;
-                    resulfArea.AlignmentPoint = pointbase; // Cần thiết khi chỉnh Mode
-
-                    btr.AppendEntity(resulfArea);
-                    tr.AddNewlyCreatedDBObject(resulfArea, true);
-                }
-                tr.Commit();
             }
             double totalArea1m2 = totalArea1 / 1000000.0; // Chuyển mm2 sang m2
             double totalArea2m2 = totalArea2 / 1000000.0; // Chuyển mm2 sang m2
             double minorArea = totalArea1m2 - totalArea2m2;
+            ShowMessageText($"TOTAL : {(totalArea1 - totalArea2) / 1000000:N2} m²", $"Area 1 : {(totalArea1) / 1000000:N2} m²", $"Area 2 : {(totalArea2) / 1000000:N2} m²", 1);
             ed.WriteMessage($"\nSelected Quantity: {count} (item) - No Close: {NoclosedCount} (item) - Total Area: {totalArea1m2:N3} m² - {totalArea2m2:N3} m² = {minorArea:N3} m²)");
+        }
+
+        // Hàm trả kết quả
+        public void ShowMessageText(string text0, string text1 = null, string text2 = null, int? count = null)
+        {
+            Document doc = Application.DocumentManager.MdiActiveDocument;
+            Editor ed = doc.Editor;
+            Database db = doc.Database;
+
+            PromptPointOptions ppk = new PromptPointOptions("\nPick point: ");
+            ppk.AllowNone = true;
+            PromptPointResult ppr = ed.GetPoint(ppk);
+            if(ppr.Status != PromptStatus.OK) return;
+            Point3d pointkq = ppr.Value;
+
+            using (Transaction tr = db.TransactionManager.StartTransaction())
+            {
+                BlockTableRecord btr = tr.GetObject(db.CurrentSpaceId, OpenMode.ForWrite) as BlockTableRecord;
+
+                // Kiểm tra null để an toàn vì string = null ở phần khai báo
+                if(!string.IsNullOrEmpty(text0))
+                {
+                    using (DBText resulf = new DBText())
+                    {
+                        resulf.Position = pointkq;
+                        resulf.TextString = text0;
+                        resulf.Height = 200.0;
+                        resulf.LayerId = db.Clayer;
+                        resulf.ColorIndex = 2;
+                        btr.AppendEntity(resulf);
+                        tr.AddNewlyCreatedDBObject(resulf, true);
+                    }
+                }
+
+                if (count == 1)
+                {
+                    if (!string.IsNullOrEmpty(text1))
+                    {
+                        using (DBText resulf = new DBText())
+                        {
+                            resulf.Position = pointkq - new Vector3d(0, 250, 0);
+                            resulf.TextString = text1;
+                            resulf.Height = 150.0;
+                            resulf.LayerId = db.Clayer;
+                            resulf.ColorIndex = 6;
+                            btr.AppendEntity(resulf);
+                            tr.AddNewlyCreatedDBObject(resulf, true);
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(text2))
+                    {
+                        using (DBText resulf = new DBText())
+                        {
+                            resulf.Position = pointkq - new Vector3d(0, 500, 0);
+                            resulf.TextString = text2;
+                            resulf.Height = 150.0;
+                            resulf.LayerId = db.Clayer;
+                            resulf.ColorIndex = 6;
+                            btr.AppendEntity(resulf);
+                            tr.AddNewlyCreatedDBObject(resulf, true);
+                        }
+                    }
+                }
+
+                tr.Commit();
+            }
         }
     }
 }
