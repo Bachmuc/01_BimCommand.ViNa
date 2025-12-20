@@ -29,20 +29,20 @@ namespace Bimcommand.AppLisp
             Editor ed = doc.Editor;
             Database db = doc.Database;
 
+            // Add phím tắt
+            PromptKeywordOptions pko = new PromptKeywordOptions("\nChoose");
+            pko.Keywords.Add("Entity");
+            pko.Keywords.Add("Color");
+            pko.Keywords.Add("Layer");
+            pko.Keywords.Add("Block");
+            pko.Keywords.Default = "Entity";
+            pko.AllowNone = true; // Cho phép ấn Enter để chọn mặc định
 
-            FilterOption _selectedOption = new FilterOption();
-            Point mousePos = Cursor.Position; //Lấy tọa độ chuột trước
-
-            // 1.Gọi form để chọn kiểu lọc
-            using (FormFilterSelect form = new FormFilterSelect(mousePos))
-            {
-                DialogResult result = Application.ShowModalDialog(form); // ShowModalDialog giúp Form hiện đè lên CAD, bắt buộc xử lý xong mới quay lại CAD
-                if (result != DialogResult.OK) return;
-                _selectedOption = form.SelectedOption; //Lấy tùy chọn người dùng chọn trên Form
-            }
+            PromptResult pr = ed.GetKeywords(pko);
+            if (pr.Status != PromptStatus.OK) return;
 
             // 2.Chọn đối tượng với bộ lọc đã chọn
-            PromptEntityOptions peo = new PromptEntityOptions($"\n[Mode: {_selectedOption}] Select an object");
+            PromptEntityOptions peo = new PromptEntityOptions($"\n[Mode: {pr.StringResult}] Select an object");
             peo.SetRejectMessage("\nThe selected object is not supported.");
             peo.AllowNone = false;
 
@@ -50,11 +50,11 @@ namespace Bimcommand.AppLisp
             if (per.Status != PromptStatus.OK) return;
 
             // 3.Xử lý logic lọc đối tượng
-            DoFilterOption(per.ObjectId, _selectedOption);
+            DoFilterOption(per.ObjectId, pr.StringResult);
         }
 
         // Hàm xử lý lọc đối tượng theo tùy chọn
-        private void DoFilterOption(ObjectId sourceId, FilterOption option)
+        private void DoFilterOption(ObjectId sourceId, string option)
         {
             Document doc = Application.DocumentManager.MdiActiveDocument;
             Editor ed = doc.Editor;
@@ -63,14 +63,14 @@ namespace Bimcommand.AppLisp
 
             using(Transaction tr = doc.TransactionManager.StartTransaction())
             {
-                Entity sourceEnt = tr.GetObject(sourceId, OpenMode.ForRead) as Entity;
-                if (sourceEnt == null) return;
+                Entity ent = tr.GetObject(sourceId, OpenMode.ForRead) as Entity;
+                if (ent == null) return;
 
                 switch (option)
                 {
-                    case FilterOption.Entity:
-                        string typeName = sourceEnt.GetRXClass().DxfName;
-                        string filterPattern = GettypeFilter(sourceEnt);
+                    case "Entity":
+                        string typeName = ent.GetRXClass().DxfName;
+                        string filterPattern = GettypeFilter(ent);
 
                         // Nếu hàm GetTypeFilter trả về wildcard (có dấu *) thì dùng
                         // Nếu không thì dùng chính tên DXF của nó
@@ -80,37 +80,37 @@ namespace Bimcommand.AppLisp
                         // vì GetTypeFilter mặc định trả về đúng tên DXF)
                         break;
 
-                    case FilterOption.Color:
-                        if (sourceEnt.Color.IsByLayer)
+                    case "Color":
+                        if (ent.Color.IsByLayer)
                         {
                             // Mã 62, giá trị 256
                             values.Add(new TypedValue((int)DxfCode.Color, 256));
-                            values.Add(new TypedValue((int)DxfCode.LayerName, sourceEnt.Layer)); // Điều này giúp loại bỏ các đối tượng ByLayer nhưng ở Layer màu khác
+                            values.Add(new TypedValue((int)DxfCode.LayerName, ent.Layer)); // Điều này giúp loại bỏ các đối tượng ByLayer nhưng ở Layer màu khác
                         }
-                        else if (sourceEnt.Color.IsByBlock)
+                        else if (ent.Color.IsByBlock)
                         {
                             // Mã 62, giá trị 0
                             values.Add(new TypedValue((int)DxfCode.Color, 0));
                         }
-                        else if (sourceEnt.Color.ColorMethod == ColorMethod.ByColor)
+                        else if (ent.Color.ColorMethod == ColorMethod.ByColor)
                         {
                             // True Color (RGB): Dùng mã 420
                             // Lưu ý: Cần lấy giá trị Int32 của màu RGB
-                            values.Add(new TypedValue(420, sourceEnt.Color.EntityColor.TrueColor));
+                            values.Add(new TypedValue(420, ent.Color.EntityColor.TrueColor));
                         }
                         else
                         {
                             // Màu ACI (Index 1-255): Dùng mã 62
-                            values.Add(new TypedValue((int)DxfCode.Color, sourceEnt.ColorIndex));
+                            values.Add(new TypedValue((int)DxfCode.Color, ent.ColorIndex));
                         }
                         break;  
 
-                    case FilterOption.Layer:
-                        values.Add(new TypedValue((int)DxfCode.LayerName, sourceEnt.Layer));
+                    case "Layer":
+                        values.Add(new TypedValue((int)DxfCode.LayerName, ent.Layer));
                         break;
 
-                    case FilterOption.Block:
-                        BlockReference blkRef = sourceEnt as BlockReference;
+                    case "Block":
+                        BlockReference blkRef = ent as BlockReference;
                         if (blkRef == null)
                         {
                             return;

@@ -78,6 +78,28 @@ namespace Bimcommand.AppLisp
                 }
             }
 
+            double scale = 1.0;
+            bool isValue = false;
+
+            while (!isValue) // Xử lý scale 1/....
+            {
+                PromptStringOptions pso = new PromptStringOptions("\nInput Scale");
+                pso.AllowSpaces = false;
+                pso.DefaultValue = "1/1";
+                pso.UseDefaultValue = true;
+
+                PromptResult pr = ed.GetString(pso);
+                if (pr.Status != PromptStatus.OK) return;
+                string input = pr.StringResult.Trim();
+
+                // Xử lý chuỗi phân số hoặc số thực
+                if (TryParseScale(input, out scale))
+                {
+                    isValue = true;
+                }
+                else ed.WriteMessage("\nEror Scale.");
+            }
+
             // Chọn điểm 1
             PromptPointOptions ppo1 = new PromptPointOptions("\nChoose Point 1: ");
             PromptPointResult ppr1 = ed.GetPoint(ppo1);
@@ -111,11 +133,11 @@ namespace Bimcommand.AppLisp
                         resultText.Position = Point2;
                         if(heigth >= 0)
                         {
-                            resultText.TextString = $"+{heigth.ToString("0.0")}";
+                            resultText.TextString = $"+{(heigth*scale).ToString("0.00")}";
                         }
                         else
                         {
-                            resultText.TextString = $"{heigth.ToString("0.0")}";
+                            resultText.TextString = $"{(heigth*scale).ToString("0.00")}";
                         }
                         // Lấy chiều cao chữ
                         if (TextHeight > 0)
@@ -137,6 +159,36 @@ namespace Bimcommand.AppLisp
                 }
                 index++;
             }
+
+        }
+
+        // Hàm hỗ trợ chuyển đổi chuỗi "1/100" thành "0.01" hoặc double
+        private bool TryParseScale(string input, out double result)
+        {
+            result = 0;
+
+            // Trường hợp 1: nhập số trực tiếp (VD: 0.01)
+            if(double.TryParse(input, out result))
+            {
+                return result != 0;
+            }
+            // Trường hợp 2: nhập dạng phân số (VD: 1/100)
+            if (input.Contains("/"))
+            {
+                string[] part = input.Split('/');
+                if (part.Length == 2) // Kiểm tra chuỗi được chia phần(length = 2 phần thì true) "1/50" -> xóa '/' -> part[0] = 1, part[1] = 50. 
+                {                     // Tương tự: 1/2/3 -> part.lenght = 3, gồm 3 phần tử '1' '2' '3'.
+                    if(double.TryParse(part[0], out double num) && double.TryParse(part[1], out double den))
+                    {
+                        if(den != 0) // Tránh lỗi chia cho 0
+                        {
+                            result = num / den;
+                            return true;
+                        }    
+                    }
+                }    
+            }
+            return false;
         }
     }
 }

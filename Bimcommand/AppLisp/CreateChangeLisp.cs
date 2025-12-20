@@ -53,17 +53,17 @@ namespace Bimcommand.AppLisp
             public string Name { get; set; }
             public Color color { get; set; }
             public string LineType { get; set; }
-            public ListLayer(string name, Color color, string lineType = null)
+            public ListLayer(string name, Color color, string lineType = "Continuous")
             {
                 Name = name;
                 this.color = color;
-                LineType = lineType;
+                this.LineType = string.IsNullOrEmpty(lineType) ? "Continuous" : lineType;
             }
 
             public static readonly List<ListLayer> StandardLayers = new List<ListLayer>
             {
                 //("Rebar", Autodesk.AutoCAD.Colors.Color.FromColorIndex(Autodesk.AutoCAD.Colors.ColorMethod.ByAci, 2)),//=> Hàm đâyng ký màu sắc đầy đủ namespace
-                new ListLayer("Rebar",Aci(4),"CENTER"),
+                new ListLayer("Rebar",Aci(4)),
                 //("SlabLayout",Color.FromColorIndex(ByAci, 4)), => có thể viết tắt khi khai báo using static Autodesk.AutoCAD.Colors.ColorMethod;
                 new ListLayer("SlabLayout",Aci(4)),
 
@@ -81,7 +81,7 @@ namespace Bimcommand.AppLisp
                 new ListLayer("StairLayout",Aci(6)),
 
                 new ListLayer("Khung",Aci(7)),
-                new ListLayer("Gird",Aci(8)),
+                new ListLayer("Gird",Aci(8),"HIDDEN"),
                 new ListLayer("Opening",Aci(7)),
                 new ListLayer("Hatch",Aci(9)),
                 new ListLayer("Work Point",Aci(7)),
@@ -185,14 +185,35 @@ namespace Bimcommand.AppLisp
             using (Transaction tr = db.TransactionManager.StartTransaction()) // Bắt đầu một giao dịch
             {
                 LayerTable layerTable = (LayerTable)tr.GetObject(db.LayerTableId, OpenMode.ForWrite); // Mở bảng layer để ghi, nếu chỉ đọc thì thấy là OpenMode.ForRead
+                LinetypeTable ltTable = (LinetypeTable)tr.GetObject(db.LinetypeTableId, OpenMode.ForRead);
+
                 foreach (var layer in ListLayer.StandardLayers) // Duyệt qua từng layer trong danh sách
                 {
+                    ObjectId ltId = db.ContinuousLinetype; // Mặc định là Continuous nếu không tìm thấy
+
+                    // Kiểm tra và xử lý LineType
+                    if(!string.IsNullOrEmpty(layer.LineType) && layer.LineType != "Continuous")
+                    {
+                        //Load Linetypr từ file acadios.lin
+                        if (!ltTable.Has(layer.LineType))
+                        {
+                            try { db.LoadLineTypeFile(layer.LineType, "acadiso.lin"); }
+                            catch { /* Không tìm thấy file hoặc tên linetype trong file */ }
+                        }
+
+                        if (ltTable.Has(layer.LineType)) // Lấy Linetype
+                        {
+                            ltId = ltTable[layer.LineType];
+                        }
+                    }
+
                     if (!layerTable.Has(layer.Name)) // Kiểm tra nếu layer chưa tồn tại
                     {
-                        LayerTableRecord layerRecord = new LayerTableRecord // Tạo một bản ghi LayerTableRecord mới (tượng trưng cho một layer trong AutoCAD).
+                        LayerTableRecord layerRecord = new LayerTableRecord() // Tạo một bản ghi LayerTableRecord mới (tượng trưng cho một layer trong AutoCAD).
                         {
                             Name = layer.Name,
-                            Color = layer.color
+                            Color = layer.color,
+                            LinetypeObjectId = ltId,
                         };
                         layerTable.Add(layerRecord); // Thêm bản ghi layer mới vào bảng layer
                         tr.AddNewlyCreatedDBObject(layerRecord, true); // Thông báo với giao dịch rằng chúng ta đã tạo một đối tượng mới để quản lý vòng đời của nó  => Nếu không có dòng này, leyer sẽ không được tạo trong AutoCAD
@@ -201,6 +222,7 @@ namespace Bimcommand.AppLisp
                     {
                         LayerTableRecord existingLayer = (LayerTableRecord)tr.GetObject(layerTable[layer.Name], OpenMode.ForWrite); // Mở layer đã tồn tại để ghi
                         existingLayer.Color = layer.color; // Cập nhật màu sắc nếu layer đã tồn tại
+                        existingLayer.LinetypeObjectId = ltId;
                     }
                 }
                 tr.Commit(); // Cam kết các thay đổi vào cơ sở dữ liệu AutoCAD

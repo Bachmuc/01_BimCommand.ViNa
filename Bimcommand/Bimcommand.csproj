@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppLisp\DimensionDetail.cs" />
     <Compile Include="AppLisp\TotalLengthArea.cs" />
     <Compile Include="AppLisp\ElevationMarking.cs" />
     <Compile Include="AppLisp\FilterSelect.cs" />
@@ -64,7 +65,7 @@
     <Compile Include="AppLisp\SetUDA.cs" />
     <Compile Include="AppLisp\ElevationZero.cs" />
     <Compile Include="AppLisp\CreateChangeLisp.cs" />
-    <Compile Include="AppLisp\LoadAutoLisp.cs" />
+    <Compile Include="LoadAutoLisp.cs" />
     <Compile Include="CADtoTEKLA\ExportSlabToTekla.cs" />
     <Compile Include="CADtoTEKLA\SupportFuctions.cs" />
     <Compile Include="KeyLincese\HardwareInfo.cs" />
