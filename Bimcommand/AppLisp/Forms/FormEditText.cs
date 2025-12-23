@@ -125,6 +125,11 @@ namespace Bimcommand.AppLisp.Forms
             lastLocation = this.Location;
         }
         #endregion
-
+        // Luôn chọn textbox đâu tiên khi show form
+        private void FormEditText_Shown(object sender, EventArgs e)
+        {
+            txtContent.Focus();
+            txtContent.SelectAll();
+        }
     }
 }

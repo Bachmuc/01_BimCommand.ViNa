@@ -53,10 +53,10 @@ namespace Bimcommand.AppLisp.Forms
 
         private void lstAtt_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(lstAtt.SelectedItems != null)
-            {
-                bttOK.PerformClick(); // Gọi lệnh click của nút OK
-            }
+            //if(lstAtt.SelectedItems != null)
+            //{
+            //    bttOK.PerformClick(); // Gọi lệnh click của nút OK
+            //}
         }
     }
 }

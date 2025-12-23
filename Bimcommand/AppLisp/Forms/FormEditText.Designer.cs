@@ -141,6 +141,7 @@
             this.Text = "Edit Text";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormEditText_FormClosed);
             this.Load += new System.EventHandler(this.FormEditText_Load);
+            this.Shown += new System.EventHandler(this.FormEditText_Shown);
             this.panelTitleBar.ResumeLayout(false);
             this.panelTitleBar.PerformLayout();
             this.ResumeLayout(false);
