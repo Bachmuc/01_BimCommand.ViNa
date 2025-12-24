@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -57,6 +58,17 @@ namespace Bimcommand.AppLisp.Forms
             //{
             //    bttOK.PerformClick(); // Gọi lệnh click của nút OK
             //}
+        }
+
+        private void FormBlockAttribute_Shown(object sender, EventArgs e)
+        {
+            // Thêm icon CAD, khớp với từng version
+            try
+            {
+                string cadExePath = Process.GetCurrentProcess().MainModule.FileName;
+                this.Icon = Icon.ExtractAssociatedIcon(cadExePath);
+            }
+            catch { }
         }
     }
 }

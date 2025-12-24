@@ -83,8 +83,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ShopDrawing\ConvertMtext.cs" />
+    <Compile Include="ShopDrawing\MoveCircleMtext.cs" />
     <Compile Include="Test\BaiToanVector.cs" />
-    <Compile Include="Test\ChooseOption.cs" />
     <Compile Include="Test\PhuongAn1_SetUDA.cs" />
     <Compile Include="Test\ThaoTacCoBan.cs" />
     <Compile Include="AppLisp\Forms\FormFilterSelect.cs">

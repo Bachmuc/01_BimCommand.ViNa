@@ -92,7 +92,7 @@
             this.AcceptButton = this.bttOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.CancelButton = this.bttCancel;
             this.ClientSize = new System.Drawing.Size(264, 211);
             this.Controls.Add(this.lbText);
@@ -100,14 +100,15 @@
             this.Controls.Add(this.bttOK);
             this.Controls.Add(this.lstAtt);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormBlockAttribute";
-            this.ShowIcon = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Attribute Fields/Column to filter";
+            this.Shown += new System.EventHandler(this.FormBlockAttribute_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -29,7 +29,8 @@ namespace Bimcommand.AppLisp
             {
                 // Khi CAD khởi động, đoạn code này chạy tự động
                 Editor ed = doc.Editor;
-                ed.WriteMessage("\n ✅ BIMCOMMAND BY TAN LOC");
+                ed.WriteMessage("\n ✅ BIMCOMMAND BY TAN LOC\n");
+                ed.WriteMessage("");
             }
         }
 
