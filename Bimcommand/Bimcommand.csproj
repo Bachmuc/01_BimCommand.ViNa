@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppLisp\CreateDimension.cs" />
     <Compile Include="AppLisp\TableExport.cs" />
     <Compile Include="AppLisp\FilterAttribute.cs" />
     <Compile Include="AppLisp\DimensionDetail.cs" />

@@ -65,6 +65,13 @@ namespace Bimcommand.AppLisp
                 // Làm tròn 4 số lẻ để tránh sai số double
                 table.ColumnsX = xs.Select(x => Math.Round(x, 4)).Distinct().OrderBy(x => x).ToList();
                 table.RowsY = ys.Select(y => Math.Round(y, 4)).Distinct().OrderByDescending(y => y).ToList();
+                /*
+                 * x => Math.Round(x, 4) : làm tròn x về 4 chữ số
+                 * Distinct() : Loại bỏ tọa độ trùng nhau
+                 * OrderBy(x => x) : Sắp xếp từ trái -> phải, Lớn -> nhỏ, Giảm dần
+                 * Distinct().OrderByDescending(y => y) : Sắp xếp ngược lại - Phải -> trái, nhỏ -> lớn.  Tăng dần
+                 * toList() : Chuyển sang List<double> và gán vào table.RowsY, table.ColumnsX
+                 */
             }
         }
 
@@ -75,7 +82,7 @@ namespace Bimcommand.AppLisp
                 if (table.ColumnsX.Count < 2 || table.RowsY.Count < 2) return (-1, -1);
 
                 // Tìm vị trí tương đối
-                int col = table.ColumnsX.FindLastIndex(x => Math.Round(pt.X, 4) >= x);
+                int col = table.ColumnsX.FindLastIndex(x => Math.Round(pt.X, 4) >= x); //
                 int row = table.RowsY.FindLastIndex(y => Math.Round(pt.Y, 4) <= y);
 
                 // Hiệu chỉnh biên (nếu điểm nằm chính xác trên biên phải/dưới cùng)
@@ -295,22 +302,22 @@ namespace Bimcommand.AppLisp
 
                 IWorkbook workbook = SpreadsheetGear.Factory.GetWorkbook(); // ***
 
-                bool sheetExists = false;
-                foreach (IWorksheet sheet in workbook.Worksheets)
-                {
-                    if (sheet.Name == "CAD-TO-EXCEL")
-                    {
-                        sheetExists = true;
-                        break;
-                    }
-                }
+                //bool sheetExists = false;
+                //foreach (IWorksheet sheet in workbook.Worksheets)
+                //{
+                //    if (sheet.Name == "CAD-TO-EXCEL")
+                //    {
+                //        sheetExists = true;
+                //        break;
+                //    }
+                //}
 
-                if (!sheetExists)
-                {
-                    IWorksheet sheetNew = workbook.Worksheets.Add();
-                    sheetNew.Name = "CAD-TO-EXCEL";
-                }
-                IWorksheet sheetActive = workbook.Worksheets["CAD-TO-EXCEL"];
+                //if (!sheetExists)
+                //{
+                //    IWorksheet sheetNew = workbook.Worksheets.Add();
+                //    sheetNew.Name = "CAD-TO-EXCEL";
+                //}
+                IWorksheet sheetActive = workbook.Worksheets["Sheet1"];
 
                 try
                 {
@@ -375,10 +382,13 @@ namespace Bimcommand.AppLisp
                         {
                             pathExcel += ".xls";
                         }
-                        workbook.SaveAs(pathExcel, FileFormat.Excel8);
+                        workbook.SaveAs(pathExcel, FileFormat.OpenXMLWorkbook);
 
                         // open
-                        Process.Start(pathExcel);
+                        Process.Start(new ProcessStartInfo(pathExcel)
+                        {
+                            UseShellExecute = true
+                        });
                     }
                 }
             }
@@ -444,14 +454,14 @@ namespace Bimcommand.AppLisp
                     tr.Commit();
                 }
 
-                ed.WriteMessage($"\nHoàn tất trong xử lý {sw.ElapsedMilliseconds} ms.");
+                ed.WriteMessage($"\nHoàn tất trong xử lý {sw.Elapsed.Minutes:D2}:{sw.Elapsed.Seconds:D2}.{sw.Elapsed.Milliseconds:D3} s.");
                 sw.Restart();
 
                 // 4. Xuất Excel
                 ed.WriteMessage($"\nĐang xuất Excel ({table.Cells.Count} ô dữ liệu)...");
                 new ExcelExporter().Export(table);
 
-                ed.WriteMessage($"\nHoàn tất trong excel {sw.ElapsedMilliseconds} ms.");
+                ed.WriteMessage($"\nHoàn tất trong excel {sw.Elapsed.Minutes:D2}:{sw.Elapsed.Seconds:D2}.{sw.Elapsed.Milliseconds:D3} s.");
             }
             catch (System.Exception ex)
             {
