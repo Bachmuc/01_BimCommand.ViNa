@@ -44,9 +44,12 @@ namespace Bimcommand.CADtoTEKLA
             //    ed.WriteMessage("\nNo entity selected.");
             //    return;
             //}
-
-
         }
+
+        /// </summary>   
+        /// Hàm hỗ trợ
+        /// </summary>
+
 
     }
 }

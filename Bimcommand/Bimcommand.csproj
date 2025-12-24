@@ -44,6 +44,13 @@
       <HintPath>C:\Program Files\Autodesk\AutoCAD 2024\acmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.16.0.18925.20022\lib\net40\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="SpreadsheetGear2012">
+      <HintPath>C:\Program Files (x86)\BimPartners\Tekla Rebar Modeler\R19.0_x64\SpreadsheetGear2012.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -57,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppLisp\TableExport.cs" />
     <Compile Include="AppLisp\FilterAttribute.cs" />
     <Compile Include="AppLisp\DimensionDetail.cs" />
     <Compile Include="AppLisp\Forms\FormBlockAttribute.cs">
@@ -99,6 +107,7 @@
     <Compile Include="AppLisp\Forms\FormEditText.Designer.cs">
       <DependentUpon>FormEditText.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\ReferenceToTekla.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AppLisp\Forms\FormBlockAttribute.resx">
@@ -116,7 +125,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="UI\" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
