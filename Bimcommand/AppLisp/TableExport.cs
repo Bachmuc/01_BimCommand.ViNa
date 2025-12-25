@@ -113,10 +113,22 @@ namespace Bimcommand.AppLisp
             }
         }
 
-        public class EntityReader
+        public class EntityReader  /* Bản nâng cấp gom nhóm text: bản cũ(SapmleSoure -> TableExport_EntityReader */
         {
+            // Cấu trúc tạm để lưu dữ liệu thô trước khi gộp
+            private struct TextInfo
+            {
+                public double Y; // Để sắp xếp trên xuống
+                public double X; // Để sắp xếp trái qua phải
+                public string Text;
+            }
+
             public void ReadContent(ObjectId[] ids, Transaction tr, TableModel table, CellLocator locator)
             {
+                // 1. Dùng Dictionary để gom nhóm theo tọa độ ô (Row, Col)
+                // Key: (Row, Col), Value: Danh sách các text trong ô đó
+                var tempMap = new Dictionary<(int, int), List<TextInfo>>();
+
                 foreach (ObjectId id in ids)
                 {
                     if (!id.IsValid || id.IsErased) continue;
@@ -124,28 +136,78 @@ namespace Bimcommand.AppLisp
                     var ent = tr.GetObject(id, OpenMode.ForRead);
                     int r = -1, c = -1;
                     string content = "";
+                    Point3d pos = Point3d.Origin;
 
+                    // Lấy thông tin và vị trí
                     if (ent is DBText txt)
                     {
-                        (r, c) = locator.Locate(txt.Position, table);
+                        pos = txt.Position;
                         content = txt.TextString;
                     }
                     else if (ent is MText mtxt)
                     {
-                        (r, c) = locator.Locate(mtxt.Location, table);
+                        pos = mtxt.Location;
                         content = mtxt.Text;
                     }
                     else if (ent is BlockReference blk)
                     {
-                        (r, c) = locator.Locate(blk.Position, table);
-                        content = blk.Name;
+                        pos = blk.Position;
+                        content = blk.Name; // Hoặc xử lý Attribute nếu cần
+                    }
+                    else
+                    {
+                        continue;
                     }
 
-                    // Chỉ thêm nếu index hợp lệ (>=0)
-                    if (r >= 0 && c >= 0)
+                    // Xác định ô
+                    (r, c) = locator.Locate(pos, table);
+
+                    // Chỉ xử lý nếu nằm trong bảng
+                    if (r >= 0 && c >= 0 && !string.IsNullOrWhiteSpace(content))
                     {
-                        table.Cells.Add(new TableCell(r, c) { Content = content });
+                        var key = (r, c);
+                        if (!tempMap.ContainsKey(key))
+                        {
+                            tempMap[key] = new List<TextInfo>();
+                        }
+
+                        // Thêm vào danh sách tạm của ô này
+                        tempMap[key].Add(new TextInfo
+                        {
+                            Y = pos.Y,
+                            X = pos.X,
+                            Text = content.Trim()
+                        });
                     }
+                }
+
+                // 2. Xử lý gộp và đưa vào TableModel
+                foreach (var kvp in tempMap)
+                {
+                    int r = kvp.Key.Item1;
+                    int c = kvp.Key.Item2;
+                    var textList = kvp.Value;
+
+                    string finalContent;
+
+                    if (textList.Count == 1)
+                    {
+                        finalContent = textList[0].Text;
+                    }
+                    else
+                    {
+                        // Sắp xếp: Ưu tiên Trên xuống (Y giảm dần), sau đó Trái sang Phải (X tăng dần)
+                        // Sai số 1 chút về Y cũng coi như cùng dòng (nếu cần)
+                        var sortedTexts = textList
+                            .OrderByDescending(t => t.Y) // Text nằm cao hơn lên trước
+                            .ThenBy(t => t.X)            // Text bên trái lên trước
+                            .Select(t => t.Text);
+
+                        // Gộp lại bằng dấu xuống dòng (Excel sẽ hiểu là Alt+Enter)
+                        finalContent = string.Join(" ", sortedTexts);
+                    }
+
+                    table.Cells.Add(new TableCell(r, c) { Content = finalContent });
                 }
             }
         }
@@ -361,7 +423,6 @@ namespace Bimcommand.AppLisp
                 catch (SystemException ex)
                 {
                     //// Nếu lỗi Excel thì hiện lên để user biết
-                    //app.Visible = true;
                     throw ex;
                 }
                 finally

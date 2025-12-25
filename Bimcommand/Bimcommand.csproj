@@ -91,11 +91,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SampleSource\TableExport_EntityReader.cs" />
     <Compile Include="ShopDrawing\ConvertMtext.cs" />
     <Compile Include="ShopDrawing\MoveCircleMtext.cs" />
     <Compile Include="Test\BaiToanVector.cs" />
+    <Compile Include="Test\MergeText.cs" />
     <Compile Include="Test\PhuongAn1_SetUDA.cs" />
-    <Compile Include="Test\ThaoTacCoBan.cs" />
+    <Compile Include="SampleSource\CreateObjectCAD.cs" />
     <Compile Include="AppLisp\Forms\FormFilterSelect.cs">
       <SubType>Form</SubType>
     </Compile>
