@@ -22,6 +22,10 @@ namespace Bimcommand.AppLisp
             // Vector hướng của DIM dựa trên góc xoay (rotation)
             Vector3d dimDir = new Vector3d(Math.Cos(dim.Rotation), Math.Sin(dim.Rotation), 0);
 
+            Point3d A, B;
+
+            Vector3d v = A.GetVectorTo(B);
+
             // Tính toán và cập nhật điểm mới
             UpdateDimPoints(dim, dimDir, point);
         }

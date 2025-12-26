@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CAD", "CAD", "{02EA681E-C7D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bimcommand", "Bimcommand\Bimcommand.csproj", "{D211534E-981D-4D3B-AB33-0CE6E30BEBBC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{15678E80-AD43-4511-A782-118123856115}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{D211534E-981D-4D3B-AB33-0CE6E30BEBBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D211534E-981D-4D3B-AB33-0CE6E30BEBBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D211534E-981D-4D3B-AB33-0CE6E30BEBBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15678E80-AD43-4511-A782-118123856115}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15678E80-AD43-4511-A782-118123856115}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15678E80-AD43-4511-A782-118123856115}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15678E80-AD43-4511-A782-118123856115}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
