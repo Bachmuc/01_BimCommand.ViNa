@@ -111,6 +111,7 @@
     <Compile Include="AppLisp\Forms\FormEditText.Designer.cs">
       <DependentUpon>FormEditText.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\ModifiedUSC.cs" />
     <Compile Include="UI\ReferenceToTekla.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -57,6 +57,30 @@ namespace Bimcommand.SampleSource
                     //Tạo đường thẳng
                     Line line = new Line ( new Point3d(0,0,0), new Point3d (0,1000,0));
 
+                    /* VỚI POLYLINE (2D)
+                     * 
+                     Polyline pl1 = new Polyline();
+                        pl1.AddVertexAt(0, new Point2d(0, 0), 0, 0, 0);
+                        pl1.AddVertexAt(1, new Point2d(1000, 0), 0, 0, 0);
+                        pl1.AddVertexAt(2, new Point2d(1000, 1000), 0, 0, 0);
+                        pl1.AddVertexAt(3, new Point2d(0, 1000), 0, 0, 0);
+                        pl1.Closed = true; //==> Đóng polyline
+
+                    AddVertexAt(int index, Point2d pt, double bulge, double startWidth, double endWidth)
+                        - intdex:       Vị trí chèn đỉnh mới (bắt đầu từ 0 --> n (đỉnh))
+                        - pt:           Tọa độ đỉnh mới
+                        - bulge:        Độ lồi lõm của đoạn thẳng nối đỉnh hiện tại với đỉnh tiếp theo (0 = đoạn thẳng, >0 = lồi, <0 = lõm)
+                        - startWidth:   Chiều rộng bắt đầu của đoạn thẳng nối đỉnh hiện tại với đỉnh tiếp theo
+                        - endWidth:     Chiều rộng kết thúc của đoạn thẳng nối đỉnh hiện tại với đỉnh tiếp theo
+                     *
+                     */
+
+                    /* VỚI POLYLINE 3D
+                     * 
+                     Polyline3d pl3d = new Polyline3d( Poly3dType.SimplePoly, new Point3dCollection { new Point3d(0,0,0), new Point3d(0,1000,10) }, fasle);
+                     *
+                     */
+
                     btr.AppendEntity(line);
                     tr.AddNewlyCreatedDBObject(line, true);
                     tr.Commit();

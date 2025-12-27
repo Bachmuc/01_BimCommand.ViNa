@@ -13,7 +13,7 @@ using Autodesk.AutoCAD.Geometry;
 
 namespace Bimcommand.SampleSource
 {
-    public class MoveUSC
+    internal class MoveUSC
     {
         [CommandMethod("US1")]
         public void US1()
