@@ -31,29 +31,8 @@ namespace Bimcommand.AppLisp
             PromptEntityResult per = ed.GetEntity(peo);
             if (per.Status != PromptStatus.OK) return;
 
-            using(Transaction tr = db.TransactionManager.StartTransaction())
-            {
+            Vector3d a = new Vector3d();
 
-            }
-
-            try
-            {
-                ObjectId[] ids = new ObjectId[] { per.ObjectId }; // Tạo một mảng chứa ID đối tượng vừa pick
-
-                ed.SetImpliedSelection(ids); //Gán mảng này vào vùng chọn hiện tại (giống như click chọn nó trên màn hình
-
-                ed.Command("_.USC", "_Object"); // Dùng cho CAD 2015 trở lên
-                // Cách 2: Nếu bạn dùng AutoCAD đời cũ (2012-2014), dùng dòng dưới đây thay thế:
-                // doc.SendStringToExecute("_.UCS _Object ", true, false, false);
-
-                ed.SetImpliedSelection(new ObjectId[0]); // Xóa chọn sau khi chọn xong
-
-                ed.WriteMessage("Done change USC");
-            }
-            catch(System.Exception ex)
-            {
-                ed.WriteMessage("\nCommand cancelled or failed.");
-            }
         }
 
         [CommandMethod("WW")] // Đổi UDA theo phương của đối tượng

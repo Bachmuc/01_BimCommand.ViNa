@@ -95,6 +95,7 @@
     <Compile Include="ShopDrawing\ConvertMtext.cs" />
     <Compile Include="ShopDrawing\MoveCircleMtext.cs" />
     <Compile Include="Test\BaiToanVector.cs" />
+    <Compile Include="SampleSource\MoveUSC.cs" />
     <Compile Include="Test\MergeText.cs" />
     <Compile Include="Test\PhuongAn1_SetUDA.cs" />
     <Compile Include="SampleSource\CreateObjectCAD.cs" />

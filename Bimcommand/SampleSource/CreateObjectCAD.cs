@@ -11,7 +11,7 @@ using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Colors;
 
-namespace Bimcommand.Test
+namespace Bimcommand.SampleSource
 {
     internal class CreateObjectCAD
     {

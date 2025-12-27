@@ -49,7 +49,7 @@ namespace Bimcommand.AppLisp
             {
                 TotalMinorArea();
             }
-
+            Vector3d ax = new Vector3d();
         }
 
         // Hàm tính tổng chiều dài
@@ -88,7 +88,7 @@ namespace Bimcommand.AppLisp
                 // ShowMessageText($"Length: {count:N2} mm", db.Clayer);
 
                 // With this:
-                ShowMessageText($"Length: {count:N2} mm");
+                ShowMessageText($"Length: {totalLength:N2} mm");
             }
 
             ed.WriteMessage($"\nSelected Quantity: {count} (item) - Total Length: {totalLength:0.00} mm");
