@@ -18,10 +18,10 @@ using Application = Autodesk.AutoCAD.ApplicationServices.Application;
 
 namespace Bimcommand.AppLisp
 {
-    public class EditTextBlock
+    public class EditText
     {
         [CommandMethod("E1")]
-        public void EditText()
+        public void cmdEditText()
         {
             Document doc = Application.DocumentManager.MdiActiveDocument;
             Database db = doc.Database;

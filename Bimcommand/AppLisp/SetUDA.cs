@@ -32,7 +32,6 @@ namespace Bimcommand.AppLisp
             ed.CurrentUserCoordinateSystem = Matrix3d.Identity; // Đặt lại UCS về World trước khi thực hiện lệnh
 
             ModifiedUSC modifiedUSCPoint = new ModifiedUSC();
-            ModifiedUSC modifiedUSCPV = new ModifiedUSC();
 
             PromptEntityOptions peo = new PromptEntityOptions("Select the object to rotate UCS\n");
             peo.AllowNone = false; // Không cho phép bỏ trống
@@ -69,7 +68,7 @@ namespace Bimcommand.AppLisp
                         Polyline pl = ent as Polyline;
 
                         Point3d closest = pl.GetClosestPointTo(pick, false); // Tìm điểm nằm trên polyline gần chỗ click nhất (để đảm bảo chính xác)
-
+                                                                             // false : tìm điểm gần nhất trên đường polyline, true: tìm điểm gần nhất trên đường thẳng vô hạn kéo dài từ polyline
                         double param = pl.GetParameterAtPoint(closest); // Lấy tham số tại điểm đó (Ví dụ: 1.5 nghĩa là giữa đỉnh 1 và 2)
                         int index = (int)Math.Floor(param); // Lấy phần nguyên -> ra chỉ số đoạn (segment index)
 
@@ -94,19 +93,19 @@ namespace Bimcommand.AppLisp
                     {
                         double angle = text.Rotation;
                         Vector3d VectorText = new Vector3d(Math.Cos(angle), Math.Sin(angle), 0);
-                        modifiedUSCPV.ModifiedUSCVector(text.Position, VectorText);
+                        modifiedUSCPoint.ModifiedUSCVector(text.Position, VectorText);
                     }
                     else if (ent is MText mtext)
                     {
                         double angle = mtext.Rotation;
                         Vector3d VectorText = new Vector3d(Math.Cos(angle), Math.Sin(angle), 0);
-                        modifiedUSCPV.ModifiedUSCVector(mtext.Location, VectorText);
+                        modifiedUSCPoint.ModifiedUSCVector(mtext.Location, VectorText);
                     }
                     else if (ent is BlockReference blr)
                     {
                         double angle = blr.Rotation;
                         Vector3d VectorText = new Vector3d(Math.Cos(angle), Math.Sin(angle), 0);
-                        modifiedUSCPV.ModifiedUSCVector(blr.Position, VectorText);
+                        modifiedUSCPoint.ModifiedUSCVector(blr.Position, VectorText);
                     }
                     else
                     {

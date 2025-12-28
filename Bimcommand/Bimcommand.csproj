@@ -77,7 +77,7 @@
     <Compile Include="AppLisp\TotalLengthArea.cs" />
     <Compile Include="AppLisp\ElevationMarking.cs" />
     <Compile Include="AppLisp\FilterSelect.cs" />
-    <Compile Include="AppLisp\EditTextBlock.cs" />
+    <Compile Include="AppLisp\EditText.cs" />
     <Compile Include="AppLisp\SetUDA.cs" />
     <Compile Include="AppLisp\ElevationZero.cs" />
     <Compile Include="AppLisp\CreateChangeLisp.cs" />
@@ -128,9 +128,6 @@
     <EmbeddedResource Include="AppLisp\Forms\FormFilterSelect.resx">
       <DependentUpon>FormFilterSelect.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
