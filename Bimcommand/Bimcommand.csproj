@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppLisp\Create_An_X.cs" />
     <Compile Include="AppLisp\CreateBreak_Line.cs" />
     <Compile Include="AppLisp\CreateDimension.cs" />
     <Compile Include="AppLisp\TableExport.cs" />
@@ -81,7 +82,7 @@
     <Compile Include="AppLisp\EditText.cs" />
     <Compile Include="AppLisp\SetUDA.cs" />
     <Compile Include="AppLisp\ElevationZero.cs" />
-    <Compile Include="AppLisp\CreateChangeLisp.cs" />
+    <Compile Include="AppLisp\CreateNewLayer.cs" />
     <Compile Include="LoadAutoLisp.cs" />
     <Compile Include="CADtoTEKLA\ExportSlabToTekla.cs" />
     <Compile Include="CADtoTEKLA\SupportFuctions.cs" />
@@ -93,8 +94,16 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SampleSource\TableExport_EntityReader.cs" />
+    <Compile Include="ShopDrawing\AssignColorMark.cs" />
     <Compile Include="ShopDrawing\ConvertMtext.cs" />
     <Compile Include="ShopDrawing\MoveCircleMtext.cs" />
+    <Compile Include="Support\frmK.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Support\frmK.Designer.cs">
+      <DependentUpon>frmK.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Support\KeyBroadShortcut.cs" />
     <Compile Include="Test\BaiToanVector.cs" />
     <Compile Include="SampleSource\MoveUSC.cs" />
     <Compile Include="Test\MergeText.cs" />
@@ -128,9 +137,9 @@
     <EmbeddedResource Include="AppLisp\Forms\FormFilterSelect.resx">
       <DependentUpon>FormFilterSelect.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
+    <EmbeddedResource Include="Support\frmK.resx">
+      <DependentUpon>frmK.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

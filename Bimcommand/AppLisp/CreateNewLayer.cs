@@ -15,7 +15,7 @@ using Autodesk.AutoCAD.GraphicsInterface;
 
 namespace Bimcommand.AppLisp
 {
-    public class CreateChangeLisp
+    public class CreateNewLayer
     {
         private void ChangeSelectlayer(string layerName) // Chọn các đối tượng và gán phím tắt để đổi layer nhanh
 

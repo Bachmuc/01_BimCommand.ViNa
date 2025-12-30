@@ -24,13 +24,14 @@ namespace Bimcommand.AppLisp
         public void Initialize()
         {
             Document doc = Application.DocumentManager.MdiActiveDocument;
+            Editor ed = doc.Editor;
 
-            if(doc != null)
+            if (doc != null)
             {
                 // Khi CAD khởi động, đoạn code này chạy tự động
-                Editor ed = doc.Editor;
+                ed.WriteMessage("\n-----------------------------");
                 ed.WriteMessage("\n ✅ BIMCOMMAND BY TAN LOC\n");
-                ed.WriteMessage("");
+                ed.WriteMessage("\n-----------------------------\n");
             }
         }
 

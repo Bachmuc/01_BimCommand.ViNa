@@ -25,7 +25,7 @@ namespace Bimcommand.ShopDrawing
 
             SelectionFilter filter = SeclFilterNameBlock("MARK-*");
             PromptSelectionOptions pso = new PromptSelectionOptions();
-            ed.WriteMessage("\nSelect Object: ");
+            ed.WriteMessage("\nSelect Mtext: ");
             PromptSelectionResult psr = ed.GetSelection(pso, filter);
 
             if (psr.Status == PromptStatus.OK)
