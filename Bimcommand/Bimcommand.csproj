@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppLisp\AlignObjects.cs" />
     <Compile Include="AppLisp\Create_An_X.cs" />
     <Compile Include="AppLisp\CreateBreak_Line.cs" />
     <Compile Include="AppLisp\CreateDimension.cs" />
