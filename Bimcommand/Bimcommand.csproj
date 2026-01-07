@@ -97,6 +97,12 @@
     <Compile Include="SampleSource\TableExport_EntityReader.cs" />
     <Compile Include="ShopDrawing\AssignColorMark.cs" />
     <Compile Include="ShopDrawing\ConvertMtext.cs" />
+    <Compile Include="ShopDrawing\Forms\frmAssignColor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ShopDrawing\Forms\frmAssignColor.Designer.cs">
+      <DependentUpon>frmAssignColor.cs</DependentUpon>
+    </Compile>
     <Compile Include="ShopDrawing\MoveCircleMtext.cs" />
     <Compile Include="Support\frmK.cs">
       <SubType>Form</SubType>
@@ -137,6 +143,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AppLisp\Forms\FormFilterSelect.resx">
       <DependentUpon>FormFilterSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ShopDrawing\Forms\frmAssignColor.resx">
+      <DependentUpon>frmAssignColor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Support\frmK.resx">
       <DependentUpon>frmK.cs</DependentUpon>

@@ -34,6 +34,15 @@ namespace Bimcommand.ShopDrawing
                 {
                     foreach (SelectedObject so in psr.Value)
                     {
+                        BlockReference br = tr.GetObject(so.ObjectId, OpenMode.ForRead) as BlockReference;
+                        if (br == null) continue;
+
+                        // Explode Block
+                        var objs = new DBObjectCollection();
+                        br.Explode(objs);
+                        br.Erase(); // Xóa BlockReference cũ
+
+
 
                     }
 
