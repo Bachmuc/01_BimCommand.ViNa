@@ -175,7 +175,7 @@ namespace Bimcommand.AppLisp
         #endregion
         #endregion
 
-        [CommandMethod("LL")] // Tạo Layer mới và cập nhật màu sắc nếu layer đã tồn tại
+        [CommandMethod("CNL")] // Tạo Layer mới và cập nhật màu sắc nếu layer đã tồn tại
         public static void CreateChange()
         {
             Document doc = Application.DocumentManager.MdiActiveDocument;
