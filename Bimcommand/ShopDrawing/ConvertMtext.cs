@@ -112,13 +112,27 @@ namespace Bimcommand.ShopDrawing
         {
             if (ent is DBText txt)
             {
-                return txt.Position;
+                return GetPointText(txt.Position, txt);
             }
             else if (ent is MText mtxt)
             {
                 return mtxt.Location;
             }
             return Point3d.Origin;
+        }
+
+        // Hàm phụ trợ vị trí mtext sau khi merger
+        private Point3d GetPointText(Point3d pt, DBText txt)
+        {
+            Vector3d vt = new Vector3d(Math.Cos(txt.Rotation), Math.Sin(txt.Rotation), 0).GetNormal();
+
+            Vector3d vY = Vector3d.ZAxis.CrossProduct(vt).GetNormal();
+            double length = txt.Height;
+            Point3d newpt;
+
+            newpt = pt + vY * length;
+
+            return newpt;
         }
 
         // Hàm gộp Text thành Mtext
@@ -165,6 +179,7 @@ namespace Bimcommand.ShopDrawing
                     rotation = ((MText)hdT).Rotation;
                 }
 
+                // Lấy danh sach neighborTexts dựa theo otherText với điều kiện(Where) ---> trả về giá trị ToList()
                 var neighborTexts = otherText.Where(t => !t.IsErased && GetTextPosition(t).DistanceTo(poinText) < hdTextHeight*2.0).ToList();
 
                 // Tạo Mtext mới
@@ -176,14 +191,14 @@ namespace Bimcommand.ShopDrawing
                     // Select(t => GetTextContent(t)) Chuyển đổi map dữ liệu
                     // String.Join nối các phần tử của một danh sách lại với nhau
 
-                    string finalText = $"{TextHeader}\\P{{\\C1\\H0.85x;{contentBody}}}";
+                    string finalText = $"{TextHeader}\\P{{\\C1\\H0.8x;{contentBody}}}";
 
                     //Tạo Mtext
                     MText mText = new MText();
                     mText.Contents = finalText;
                     mText.Color = Color.FromColorIndex(ColorMethod.ByAci, 255) ;
-                    mText.Location = poinText;
                     mText.TextHeight = hdTextHeight;
+                    mText.Location = poinText;
                     mText.Layer = hdT.Layer;
                     mText.LineSpacingFactor = 0.8;
                     mText.Rotation = rotation;
