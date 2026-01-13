@@ -27,65 +27,56 @@ namespace Bimcommand.ShopDrawing
             Database db= doc.Database;
 
             // Quét chọn qua các đối tượng Mtext, Circle
-            PromptSelectionOptions pso = new PromptSelectionOptions(); 
-            SelectionFilter slf = new SelectionFilter(new[]
+            PromptSelectionOptions pso = new PromptSelectionOptions();
+            SelectionFilter slf = new SelectionFilter(new TypedValue[]
             {
-                new TypedValue((int)DxfCode.Start, "MTEXT, CIRCLE")
-            } );
+                new TypedValue(-2, "<OR"),
+                new TypedValue((int)DxfCode.Start, "MTEXT"),
+                new TypedValue((int)DxfCode.Start, "CIRCLE"),
+                new TypedValue(-2, "OR>")
+            });
             PromptSelectionResult psr = ed.GetSelection(pso, slf);
             if ( psr.Status != PromptStatus.OK ) return;
-
-            // Khái báo biến lưu CAD
-            List<ObjectId> mtext = new List<ObjectId>();
-            List<ObjectId> circle = new List<ObjectId>();
 
             //Phân loại Object
             using(Transaction tr = db.TransactionManager.StartTransaction())
             {
-                foreach( ObjectId id in psr.Value.GetObjectIds())
+                var circles = new List<Circle>();
+                var mtexts = new List<MText>();
+
+                foreach (ObjectId id in psr.Value.GetObjectIds())
                 {
                     Entity ent = tr.GetObject(id, OpenMode.ForRead) as Entity;
-                    if(ent is MText)
+
+                    if (ent is Circle c)
                     {
-                        mtext.Add(id);
+                        circles.Add(c);
                     }
-                    else if (ent is Circle)
+                    else if (ent is MText mtext)
                     {
-                        Circle c = (Circle)ent;
+                        mtexts.Add(mtext);
                     }
                 }
-                if (!mtext.Any() || !circle.Any())
+
+                foreach (MText mt in mtexts)
                 {
-                    ed.WriteMessage("\nCT1: Not enough MTEXT or CIRCLE.");
-                    return;
+                    if (circles.Count == 0) break;
+
+                    var LocationMtext = mt.Location;
+
+                    // Circle gần nhất
+                    var circleNearest = circles.OrderBy(x => x.Center.DistanceTo(LocationMtext)).First();
+
+                    // Move vector
+
+
+                    // Loại bỏ tránh trùng
+                    mtexts.Remove(mt);
+                    circles.Remove(circleNearest);
                 }
-                //Lấy toàn bộ circle để check collision
 
+                tr.Commit();
             }
-        }
-
-        // --- Hàm hỗ trợ ---
-        // Hàm chuyển đổi radian
-        private static double DegRadians(double deg )
-        {
-            return deg * Math.PI / 180; 
-        }
-        // Xử lý Circle
-        private static List<Circle> GetAllCircle(Transaction tr, Database db)
-        {
-            List<Circle> result = new List<Circle>();
-
-            BlockTable bt = tr.GetObject(db.BlockTableId, OpenMode.ForRead) as BlockTable;
-            BlockTableRecord btr = tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForRead) as BlockTableRecord;
-            foreach (ObjectId oId in btr)
-            {
-                if (tr.GetObject(oId, OpenMode.ForRead) is Circle c)
-                {
-                    result.Add(c);
-                }
-            }
-
-            return result;
         }
     }
 }
