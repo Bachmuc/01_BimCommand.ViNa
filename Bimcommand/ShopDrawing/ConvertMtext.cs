@@ -31,8 +31,6 @@ namespace Bimcommand.ShopDrawing
 
             if (psr.Status == PromptStatus.OK)
             {
-                int count = 0;
-
                 using (Transaction tr = db.TransactionManager.StartTransaction())
                 {
                     BlockTableRecord btr = tr.GetObject(db.CurrentSpaceId, OpenMode.ForWrite) as BlockTableRecord;
@@ -75,11 +73,9 @@ namespace Bimcommand.ShopDrawing
                             }
                         }
                         MergerText(tr, btr, TextEntity);
-                        count++;
                     }
                     tr.Commit();
                 }
-                ed.WriteMessage($"Processed {count} objects!");
             }
         }
 
