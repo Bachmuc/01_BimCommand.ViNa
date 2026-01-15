@@ -54,7 +54,7 @@ namespace Bimcommand.UI
             });
 
             ed.CurrentUserCoordinateSystem = newUSC; // Cập nhật tọa độ người dùng
-            ed.Regen(); // Cập nhật lại viewport để nhìn thấy sự thay đổi icon UCS
+            //ed.Regen(); // Cập nhật lại viewport để nhìn thấy sự thay đổi icon UCS
         }
 
 
@@ -93,7 +93,7 @@ namespace Bimcommand.UI
                 0, 0, 0, 1
             });
             ed.CurrentUserCoordinateSystem = newUSC; // Cập nhật tọa độ người dùng
-            ed.Regen(); // Cập nhật lại viewport để nhìn thấy sự thay đổi icon UCS
+            //ed.Regen(); // Cập nhật lại viewport để nhìn thấy sự thay đổi icon UCS
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Bimcommand.AppLisp.TableExport;
+using static Bimcommand.AppLisp.Export_Excel.TableExport;
 
 namespace Bimcommand.SampleSource
 {

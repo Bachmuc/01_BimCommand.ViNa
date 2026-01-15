@@ -19,7 +19,7 @@ namespace Bimcommand.ShopDrawing
 {
     public class AssignColorMark
     {
-        [CommandMethod("CCT")]
+        [CommandMethod("CCT", CommandFlags.UsePickSet)]
         public void ChangeColorMtext()
         {
             Document doc = Application.DocumentManager.CurrentDocument;

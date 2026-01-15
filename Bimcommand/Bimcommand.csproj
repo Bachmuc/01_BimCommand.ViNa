@@ -68,7 +68,14 @@
     <Compile Include="AppLisp\Create_An_X.cs" />
     <Compile Include="AppLisp\CreateBreak_Line.cs" />
     <Compile Include="AppLisp\CreateDimension.cs" />
-    <Compile Include="AppLisp\TableExport.cs" />
+    <Compile Include="AppLisp\Export_Excel\CreateListFAKE.cs" />
+    <Compile Include="AppLisp\Export_Excel\CreateList_frm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AppLisp\Export_Excel\CreateList_frm.Designer.cs">
+      <DependentUpon>CreateList_frm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AppLisp\Export_Excel\TableExport.cs" />
     <Compile Include="AppLisp\FilterAttribute.cs" />
     <Compile Include="AppLisp\DimensionDetail.cs" />
     <Compile Include="AppLisp\Forms\FormBlockAttribute.cs">
@@ -131,6 +138,9 @@
     <Compile Include="UI\ReferenceToTekla.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AppLisp\Export_Excel\CreateList_frm.resx">
+      <DependentUpon>CreateList_frm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppLisp\Forms\FormBlockAttribute.resx">
       <DependentUpon>FormBlockAttribute.cs</DependentUpon>
     </EmbeddedResource>

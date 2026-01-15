@@ -134,7 +134,7 @@ namespace Bimcommand.AppLisp
                 // Đặt UCS về World (Ma trận Identity)
                 ed.CurrentUserCoordinateSystem = Matrix3d.Identity;
                 // Cập nhật lại viewport để nhìn thấy sự thay đổi icon UCS
-                ed.Regen();
+                //ed.Regen();
 
                 ed.WriteMessage("\nUCS set to World.");
             }

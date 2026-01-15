@@ -15,7 +15,7 @@ using System.Windows.Forms;
 using Application = Autodesk.AutoCAD.ApplicationServices.Application;
 using System.IO;
 
-namespace Bimcommand.AppLisp
+namespace Bimcommand.AppLisp.Export_Excel
 {
     public class TableExport
     {
