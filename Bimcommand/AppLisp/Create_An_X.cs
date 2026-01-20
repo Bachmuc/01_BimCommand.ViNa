@@ -6,7 +6,6 @@ using Autodesk.AutoCAD.Runtime;
 
 using Microsoft.Office.Interop.Excel;
 
-using SpreadsheetGear.Charts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
