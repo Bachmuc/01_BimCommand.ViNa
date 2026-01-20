@@ -21,6 +21,11 @@ namespace Bimcommand.AppLisp.Export_Excel
             Editor ed = doc.Editor;
             Database db = doc.Database;
 
+            PromptSelectionOptions pso = new PromptSelectionOptions();
+            SelectionFilter slf = new SelectionFilter(new TypedValue[] { new TypedValue((int)DxfCode.Start, "*TEXT") });
+            pso.AllowDuplicates = true; // true 
+
+            pso.SetKeywords("O", "Option");
         }
 
         [CommandMethod("CLB")]
