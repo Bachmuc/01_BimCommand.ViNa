@@ -46,7 +46,7 @@ namespace Test_Project_Library
 
             // Đường dẫn đến thư mục cài đặt Tekla (Bạn cần sửa đường dẫn này đúng với máy của bạn)
             // Lưu ý: Tekla 2025 thì đường dẫn thường là ...\2025.0\bin\
-            string teklaBinPath = @"C:\TeklaStructures\2025.0\bin\plugins\CustomProperties\CustomPropertiesRPCNet\";
+            string teklaBinPath = @"C:\TeklaStructures\2020.0\nt\bin";
 
             string assemblyPath = Path.Combine(teklaBinPath, assemblyName + ".dll");
 

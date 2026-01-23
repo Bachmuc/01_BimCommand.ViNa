@@ -259,6 +259,7 @@
     <Compile Include="AppLisp\Create_An_X.cs" />
     <Compile Include="AppLisp\CreateBreak_Line.cs" />
     <Compile Include="AppLisp\CreateDimension.cs" />
+    <Compile Include="AppLisp\Export_Excel\Area_Bimpartners.cs" />
     <Compile Include="AppLisp\Export_Excel\CreateListFAKE.cs" />
     <Compile Include="AppLisp\Export_Excel\CreateList_frm.cs">
       <SubType>Form</SubType>

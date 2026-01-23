@@ -113,10 +113,6 @@
       <HintPath>C:\TeklaStructures\2025.0\bin\Tekla.Structures.Plugins.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Tekla.Structures.Service">
-      <HintPath>C:\TeklaStructures\2025.0\bin\Tekla.Structures.Service.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExportSlab.cs" />
